@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--c0:#FAF5F0;--c1:#F0DDD0;--c2:#DEB99A;--c3:#B8825A;--c4:#8A5C38;--ink:#1E0F05;--ink2:#7A5C42;--ink3:#BFA090;--sf:Georgia,'Times New Roman',serif;--ss:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+body{font-family:var(--ss);background:var(--c0);color:var(--ink);min-height:100vh}
+/* HDR */
+.hdr{background:var(--c0);border-bottom:1px solid var(--c1);padding:0 28px;display:flex;align-items:center;position:sticky;top:0;z-index:30;height:64px;gap:20px}
+.brand{display:flex;flex-direction:column;align-items:center;margin-right:auto}
+.b-hrk{font-family:var(--sf);font-size:20px;letter-spacing:8px;color:var(--ink);font-weight:normal;line-height:1}
+.b-line{width:100%;height:1px;background:var(--c3);margin:3px 0}
+.b-name{font-size:6.5px;letter-spacing:2.5px;color:var(--ink2);text-transform:uppercase}
+.nav{display:flex;gap:0}
+.nb{background:none;border:none;padding:8px 14px;font-size:10px;cursor:pointer;color:var(--ink2);font-family:var(--ss);letter-spacing:.7px;text-transform:uppercase;position:relative;transition:color .15s}
+.nb::after{content:'';position:absolute;bottom:-1px;left:14px;right:14px;height:1px;background:var(--c3);opacity:0;transition:opacity .15s}
+.nb:hover{color:var(--ink)}.nb.on{color:var(--ink)}.nb.on::after,.nb:hover::after{opacity:1}
+/* SCREENS */
+.screen{display:none;padding:36px 28px;max-width:920px;margin:0 auto}.screen.on{display:block}
+/* HERO */
+.hero{text-align:center;padding:60px 28px 52px;border-bottom:1px solid var(--c1);margin-bottom:48px;position:relative;overflow:hidden}
+.hero-deco{position:absolute;font-family:var(--sf);font-size:150px;color:var(--c1);bottom:-16px;left:50%;transform:translateX(-50%);letter-spacing:16px;pointer-events:none;white-space:nowrap;opacity:.65;line-height:1}
+.eye{font-size:9px;letter-spacing:3px;color:var(--c3);text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-family:var(--sf);font-size:38px;font-weight:normal;color:var(--ink);line-height:1.25;margin-bottom:14px}
+.hero p{font-size:13px;color:var(--ink2);line-height:1.85;max-width:400px;margin:0 auto 28px}
+.btn-main{display:inline-block;border:1px solid var(--ink);color:var(--ink);padding:11px 32px;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;background:none;font-family:var(--ss);transition:all .18s}
+.btn-main:hover{background:var(--ink);color:var(--c0)}
+/* STAT ROW */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--c1);border:1px solid var(--c1);margin-bottom:48px}
+.stat{background:var(--c0);padding:24px;text-align:center}
+.stat-n{font-family:var(--sf);font-size:30px;color:var(--c3);font-weight:normal}
+.stat-l{font-size:11px;color:var(--ink2);margin-top:5px}
+/* SEC */
+.sec{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--c1)}
+.sec-t{font-family:var(--sf);font-size:22px;font-weight:normal;color:var(--ink)}
+.sec-a{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--c3);background:none;border:none;cursor:pointer;font-family:var(--ss)}
+/* CARDS */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.card{background:var(--c0);border:1px solid var(--c1);padding:20px;cursor:pointer;transition:all .16s;text-align:left;width:100%;font-family:var(--ss)}
+.card:hover{border-color:var(--c3);background:#fdf0e8}
+.cm{display:flex;align-items:center;gap:7px;margin-bottom:9px}
+.pill{font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--c4);background:var(--c1);border:1px solid var(--c2);padding:2px 8px}
+.diff{font-size:9px;color:var(--ink3);margin-left:auto}
+.card h3{font-family:var(--sf);font-size:14px;font-weight:normal;color:var(--ink);margin-bottom:5px;line-height:1.35}
+.card p{font-size:11px;color:var(--ink2);line-height:1.6}
+.cf{display:flex;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid var(--c1)}
+.ct{font-size:10px;color:var(--ink3)}.cg{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--c3);margin-left:auto}
+/* CAT FILTER */
+.cats{display:flex;gap:7px;margin-bottom:20px;flex-wrap:wrap}
+.cb{background:none;border:1px solid var(--c1);padding:4px 12px;font-size:9px;cursor:pointer;color:var(--ink2);font-family:var(--ss);letter-spacing:.8px;text-transform:uppercase;transition:all .14s}
+.cb.on,.cb:hover{border-color:var(--c3);color:var(--ink);background:var(--c1)}
+.sc-count{font-size:11px;color:var(--ink3)}
+/* ─── CHAT ─── */
+.chat-header{background:var(--c0);border:1px solid var(--c1);padding:16px 20px;margin-bottom:0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.ch-left{flex:1;min-width:0}
+.ch-eyebrow{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--c3);margin-bottom:4px}
+.ch-round{font-size:11px;color:var(--ink2);margin-top:3px}
+.ch-title{font-family:var(--sf);font-size:17px;font-weight:normal;color:var(--ink);line-height:1.3}
+.ch-char{font-size:11px;color:var(--ink2);margin-top:3px}
+.end-btn{border:1px solid var(--c3);background:none;color:var(--c3);padding:8px 16px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ss);white-space:nowrap;flex-shrink:0;transition:all .15s;align-self:flex-start}
+.end-btn:hover{background:var(--c3);color:#fff}
+/* COACH CARD */
+.coach-card{background:var(--c1);border-left:3px solid var(--c3);padding:16px 18px;margin-bottom:0;border-top:none}
+.coach-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--c4);font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.coach-text{font-size:13px;color:var(--ink);line-height:1.75}
+/* MSGS */
+.msgs{border:1px solid var(--c1);border-top:none;height:300px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:#fff}
+/* CHARACTER opening msg */
+.char-msg{background:var(--c0);border:1px solid var(--c1);padding:14px 16px;border-radius:0}
+.char-name{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--c4);margin-bottom:8px;font-weight:600}
+.char-action{font-size:12px;color:var(--ink3);font-style:italic;margin-bottom:7px;line-height:1.6}
+.char-quote{font-size:13px;color:var(--ink);line-height:1.7;margin-bottom:8px}
+.char-hint{font-size:11px;color:var(--ink3);font-style:italic;line-height:1.6}
+/* regular msgs */
+.msg{display:flex;gap:8px;align-items:flex-start}
+.msg.u{flex-direction:row-reverse}
+.ava{width:26px;height:26px;border:1px solid var(--c2);background:var(--c1);display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--c4);flex-shrink:0;font-family:var(--sf);letter-spacing:.5px}
+.msg.u .ava{background:var(--ink);color:var(--c0);border-color:var(--ink)}
+.bub{max-width:80%;padding:9px 13px;font-size:13px;line-height:1.7}
+.msg:not(.u) .bub{background:var(--c0);color:var(--ink);border:1px solid var(--c1)}
+.msg.u .bub{background:var(--ink);color:#fff}
+.dots{display:flex;gap:3px;align-items:center;padding:4px 0}
+.dots span{width:5px;height:5px;background:var(--c3);border-radius:50%;animation:bl 1.2s infinite}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes bl{0%,80%,100%{opacity:.2}40%{opacity:1}}
+/* INPUT */
+.inp-wrap{border:1px solid var(--c1);border-top:none;background:var(--c0);padding:12px 16px}
+.inp{width:100%;border:none;background:transparent;font-size:13px;font-family:var(--ss);resize:none;line-height:1.55;color:var(--ink);max-height:80px;outline:none}
+.inp::placeholder{color:var(--ink3)}
+.inp-foot{display:flex;align-items:center;gap:10px;margin-top:8px;padding-top:8px;border-top:1px solid var(--c1)}
+.inp-hint{font-size:10px;color:var(--ink3);flex:1}
+.inp-controls{display:flex;align-items:center;gap:6px}
+.char-cnt{font-size:10px;color:var(--ink3)}
+.mic-btn{width:32px;height:32px;border:1px solid var(--c2);background:none;cursor:pointer;color:var(--c3);font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.mic-btn:hover,.mic-btn.on{border-color:var(--c3);background:var(--c3);color:#fff}
+.send-btn{background:var(--ink);border:none;cursor:pointer;color:#fff;font-size:16px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;transition:opacity .15s}
+.send-btn:disabled{opacity:.3;cursor:default}
+/* RESULTS */
+.res-wrap{max-width:520px;margin:0 auto}
+.res-hero{text-align:center;padding:36px;background:var(--c1);border:1px solid var(--c2);margin-bottom:18px}
+.res-n{font-family:var(--sf);font-size:68px;font-weight:normal;color:var(--ink);line-height:1}
+.res-l{font-size:11px;color:var(--ink2);margin-top:8px;letter-spacing:.4px}
+.res-blk{border:1px solid var(--c1);padding:18px 20px;margin-bottom:12px}
+.res-blk h3{font-family:var(--sf);font-size:16px;font-weight:normal;color:var(--ink);margin-bottom:11px;padding-bottom:8px;border-bottom:1px solid var(--c1)}
+.res-blk p,.res-blk li{font-size:13px;color:var(--ink2);line-height:1.75}
+.res-blk ul{padding-left:15px}.res-blk li{margin-bottom:5px}
+.cmp-row{display:flex;align-items:center;gap:11px;margin-bottom:10px}
+.cmp-l{font-size:11px;color:var(--ink2);width:160px;flex-shrink:0}
+.cmp-b{flex:1;background:var(--c1);height:4px;overflow:hidden}
+.cmp-f{background:var(--c3);height:100%}
+.cmp-n{font-family:var(--sf);font-size:14px;color:var(--ink);width:18px;text-align:right}
+.res-acts{display:flex;gap:10px;justify-content:center;margin-top:24px}
+.btn-o{background:none;border:1px solid var(--ink);color:var(--ink);padding:11px 26px;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ss);transition:all .16s}
+.btn-o:hover{background:var(--ink);color:var(--c0)}
+.btn-g{background:none;border:1px solid var(--c2);color:var(--ink2);padding:11px 26px;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ss);transition:all .16s}
+.btn-g:hover{border-color:var(--c3);color:var(--ink)}
+.res-loader{font-size:13px;color:var(--ink2);padding:48px;text-align:center}
+/* PRICING */
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+.pc{border:1px solid var(--c1);padding:26px 20px}
+.pc.hot{border-color:var(--c3);background:#fdf5f0}
+.pc-badge{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--c4);border:1px solid var(--c2);display:inline-block;padding:2px 9px;margin-bottom:12px}
+.pc h3{font-family:var(--sf);font-size:19px;font-weight:normal;color:var(--ink);margin-bottom:7px}
+.pc-p{font-family:var(--sf);font-size:28px;font-weight:normal;color:var(--ink);line-height:1}
+.pc-per{font-size:10px;color:var(--ink2);margin-bottom:16px;margin-top:3px}
+.pc-f{font-size:11px;color:var(--ink2);margin-bottom:6px;padding-left:10px;position:relative;line-height:1.5}
+.pc-f::before{content:'—';position:absolute;left:0;color:var(--c3)}
+.pc-btn{width:100%;margin-top:18px;padding:10px;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ss);border:1px solid var(--c3);background:none;color:var(--c4);transition:all .14s}
+.pc.hot .pc-btn{background:var(--ink);color:#fff;border-color:var(--ink)}
+/* PROFILE */
+.st-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--c1);border:1px solid var(--c1);margin-bottom:30px}
+.st-box{background:var(--c0);padding:22px;text-align:center}
+.st-n{font-family:var(--sf);font-size:36px;font-weight:normal;color:var(--ink)}
+.st-l{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink2);margin-top:5px}
+.hi{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--c1)}
+.hi-sc{width:38px;height:38px;border:1px solid var(--c2);display:flex;align-items:center;justify-content:center;font-family:var(--sf);font-size:14px;color:var(--c4);flex-shrink:0}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="brand">
+    <div class="b-hrk">HRK</div>
+    <div class="b-line"></div>
+    <div class="b-name">Kristina Pletneva</div>
+  </div>
+  <nav class="nav">
+    <button class="nb on" onclick="go('home')">Главная</button>
+    <button class="nb" onclick="go('scenarios')">Сценарии</button>
+    <button class="nb" onclick="go('pricing')">Тарифы</button>
+    <button class="nb" onclick="go('profile')">Прогресс</button>
+  </nav>
+</header>
+
+<!-- HOME -->
+<div class="screen on" id="s-home">
+  <div class="hero">
+    <div class="hero-deco">HRK</div>
+    <p class="eye">ИИ-тренажёр для руководителей · 2026</p>
+    <h1>Сложные разговоры —<br>без провалов</h1>
+    <p>Отрабатывайте управленческие диалоги с ИИ-персонажами. Разбор от эксперта-HRD. Рост компетенций — в безопасной среде.</p>
+    <button class="btn-main" onclick="go('scenarios')">Выбрать сценарий</button>
+  </div>
+  <div class="stats" style="margin-bottom:48px">
+    <div class="stat"><div class="stat-n">36</div><div class="stat-l">Сценариев</div></div>
+    <div class="stat"><div class="stat-n">8</div><div class="stat-l">Категорий</div></div>
+    <div class="stat"><div class="stat-n">6</div><div class="stat-l">Компетенций</div></div>
+  </div>
+  <div class="sec"><span class="sec-t">Популярные сценарии</span><button class="sec-a" onclick="go('scenarios')">Все →</button></div>
+  <div class="grid" id="home-grid"></div>
+</div>
+
+<!-- SCENARIOS -->
+<div class="screen" id="s-scenarios">
+  <div class="sec"><span class="sec-t">Все сценарии</span><span class="sc-count" id="sc-count"></span></div>
+  <div class="cats" id="cats"></div>
+  <div class="grid" id="full-grid"></div>
+</div>
+
+<!-- CHAT -->
+<div class="screen" id="s-chat">
+  <div class="chat-header">
+    <div class="ch-left">
+      <div class="ch-eyebrow">Сценарий · <span id="round-info">Раунд 0 / 5</span></div>
+      <div class="ch-title" id="cb-title">—</div>
+      <div class="ch-char" id="cb-char">—</div>
+    </div>
+    <button class="end-btn" onclick="endChat()">Получить разбор</button>
+  </div>
+  <div class="coach-card" id="coach-card">
+    <div class="coach-label">🎯&nbsp; Тренер HRK — Кристина Плетнева</div>
+    <div class="coach-text" id="coach-text">—</div>
+  </div>
+  <div class="msgs" id="msgs"></div>
+  <div class="inp-wrap">
+    <textarea class="inp" id="inp" rows="2" placeholder="Ваш ответ как руководитель..." onkeydown="onKey(event)" oninput="onInput()"></textarea>
+    <div class="inp-foot">
+      <span class="inp-hint">Чем короче и точнее — тем выше балл. Лимит 500 символов.</span>
+      <div class="inp-controls">
+        <span class="char-cnt" id="char-cnt">0 / 500</span>
+        <button class="mic-btn" id="mic-btn" onclick="toggleMic()" title="Голосовой ввод">🎤</button>
+        <button class="send-btn" id="send-btn" onclick="send()">↑</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="screen" id="s-results">
+  <div class="res-wrap" id="res-wrap">
+    <div class="res-loader"><div class="dots" style="justify-content:center"><span></span><span></span><span></span></div><br>Кристина анализирует ваш разговор...</div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="screen" id="s-pricing">
+  <div class="sec"><span class="sec-t">Тарифы</span></div>
+  <div class="pg">
+    <div class="pc">
+      <h3>Старт</h3><div class="pc-p">990 ₽</div><div class="pc-per">в месяц</div>
+      <div class="pc-f">5 сценариев в месяц</div><div class="pc-f">Базовый разбор</div><div class="pc-f">История сессий</div>
+      <button class="pc-btn">Начать</button>
+    </div>
+    <div class="pc hot">
+      <div class="pc-badge">Популярный</div>
+      <h3>Профи</h3><div class="pc-p">2 490 ₽</div><div class="pc-per">в месяц</div>
+      <div class="pc-f">Все 36 сценариев</div><div class="pc-f">Глубокий разбор компетенций</div>
+      <div class="pc-f">Прогресс и аналитика</div><div class="pc-f">Голосовой ввод</div><div class="pc-f">Новые сценарии ежемесячно</div>
+      <button class="pc-btn">Выбрать</button>
+    </div>
+    <div class="pc">
+      <h3>Команда</h3><div class="pc-p">от 9 900 ₽</div><div class="pc-per">до 10 человек / мес</div>
+      <div class="pc-f">Всё из Профи</div><div class="pc-f">Командная аналитика</div>
+      <div class="pc-f">Кастомные сценарии</div><div class="pc-f">HR-интеграции</div>
+      <button class="pc-btn">Связаться</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="screen" id="s-profile">
+  <div class="sec"><span class="sec-t">Мой прогресс</span></div>
+  <div class="st-row">
+    <div class="st-box"><div class="st-n" id="p-s">0</div><div class="st-l">Сессий</div></div>
+    <div class="st-box"><div class="st-n" id="p-a">—</div><div class="st-l">Средний балл</div></div>
+    <div class="st-box"><div class="st-n" id="p-b">—</div><div class="st-l">Лучший результат</div></div>
+  </div>
+  <div class="sec" style="margin-bottom:14px"><span class="sec-t" style="font-size:18px">История сессий</span></div>
+  <div id="hist"></div>
+</div>
+
+<script>
+const SC=[
+/* ── ДЕЛЕГИРОВАНИЕ ── */
+{id:1,title:"Постановка амбициозной задачи",cat:"Делегирование",diff:"Средний",time:"15 мин",
+desc:"Нужно поставить стратегический проект ключевому специалисту, который сомневается в своих силах.",
+char:"Андрей Волков · ведущий специалист / тимлид",
+action:"Входит в кабинет, садится напротив, слегка напряжён",
+hint:"(Жду аргументов: моя экспертиза vs риски. И что я с этого получу.)",
+open:"«Три месяца, новый продукт, команда с нуля... Это выглядит безумно. А если не получится? И почему вообще я?»",
+coach:"Привет! Ты — руководитель, которому нужно поставить амбициозную задачу Андрею Волкову, ведущему специалисту. Проект стратегический, сроки жёсткие, а ресурсов в обрез. Андрей надёжный и талантливый, но такого масштаба он ещё не делал. Твоя задача — вдохновить его, используя технику «Вызов». Главное — показать, почему именно он, раскрыть видение и выразить веру в него. После каждого твоего шага я дам короткий фидбэк. Удачи — начинай!",
+sys:`Ты Андрей Волков — ведущий специалист. Получил амбициозное задание: 3 месяца, новый продукт, команда с нуля. Ты надёжный, но не уверен в своих силах для такого масштаба. Сначала сомневаешься и возражаешь. Если руководитель объясняет почему именно ты и верит в тебя — начинаешь загораться. Если давит авторитетом — сопротивляешься. 2–4 предложения.`},
+
+{id:2,title:"Задача сотруднику без инициативы",cat:"Делегирование",diff:"Средний",time:"15 мин",
+desc:"Пассивный сотрудник, который всегда ждёт указаний. Нужно вовлечь и передать ответственность.",
+char:"Михаил Орлов · специалист",
+action:"Сидит, ждёт. Привычная поза — руки на коленях, взгляд вниз.",
+hint:"(Просто скажи что делать — я сделаю. Зачем это всё?)",
+open:"«Слушаю. Что нужно сделать?»",
+coach:"Перед тобой Михаил — исполнительный, но абсолютно пассивный специалист. Он делает ровно то, что сказано, не больше. Твоя задача — делегировать ему аналитическую задачу так, чтобы он взял на себя ответственность, а не просто «выполнил поручение». Используй технику «Вопросы вместо инструкций»: задавай вопросы, которые заставят его думать самого.",
+sys:`Ты Михаил — исполнительный специалист без инициативы. Привык к чётким инструкциям. Если руководитель даёт готовые решения — просто кивает. Если задаёт вопросы и ждёт твоего мнения — немного теряется, но постепенно включается. Говори коротко, немного неуверенно.`},
+
+{id:3,title:"Делегирование с высокой ответственностью",cat:"Делегирование",diff:"Сложный",time:"20 мин",
+desc:"Передача ключевого клиента сильному, но сомневающемуся сотруднику.",
+char:"Сергей Кузнецов · senior-специалист / тимлид",
+action:"Входит деловито, но в глазах лёгкое напряжение",
+hint:"(Если облажаюсь — это мой провал. Не уверен, что хочу такой риск.)",
+open:"«Понимаю, о каком клиенте речь. Скажу честно — я немного волнуюсь. Это серьёзная ответственность.»",
+coach:"Тебе нужно передать стратегического клиента Сергею. Он сильный профессионал, но сейчас сомневается — боится подвести. Твоя задача: снять тревогу, не преуменьшая сложность, и передать не просто задачу, а доверие. Ключевое — признай риски честно и покажи систему поддержки.",
+sys:`Ты Сергей, опытный специалист. Тебе передают ключевого клиента. Ты понимаешь ответственность и немного боишься. Не хочешь подвести компанию. Если руководитель честен о рисках и предлагает поддержку — принимаешь. Если давит или преуменьшает сложность — сопротивляешься.`},
+
+{id:4,title:"Делегирование «своей» задачи",cat:"Делегирование",diff:"Средний",time:"15 мин",
+desc:"Передача аналитической задачи, которую руководитель всегда делал сам. Сотрудник удивлён.",
+char:"Ольга Смирнова · специалист",
+action:"Слегка удивлена. Раньше вы всегда делали это сами.",
+hint:"(Почему именно я? Я справлюсь? А вдруг сделаю хуже, чем вы?)",
+open:"«Вы хотите, чтобы я взяла это на себя? Но вы же всегда сами...»",
+coach:"Ты решил делегировать задачу, которую всегда делал сам. Ольга удивлена — она боится не справиться и разочаровать тебя. Твоя задача: объяснить зачем это ей (а не только тебе), передать уверенность и договориться о точках контроля без микроменеджмента.",
+sys:`Ты Ольга — специалист. Тебе предлагают задачу, которую руководитель всегда делал сам. Ты немного льщена, но больше — напугана. Если руководитель объясняет зачем именно тебе и предлагает поддержку — принимаешь с воодушевлением. Если просто «поручает» — переспрашиваешь и сомневаешься.`},
+
+/* ── ОБРАТНАЯ СВЯЗЬ ── */
+{id:5,title:"Ежемесячный one-to-one",cat:"Обратная связь",diff:"Лёгкий",time:"15 мин",
+desc:"Регулярная встреча с сотрудником по итогам месяца: 70% плана, есть и провалы, и успехи.",
+char:"Екатерина Ветрова · менеджер по маркетингу",
+action:"Входит с ноутбуком, приготовила свои результаты",
+hint:"(Хочу услышать честную оценку — но боюсь акцента только на плохом.)",
+open:"«Добрый день. Я подготовила итоги по месяцу. С чего начнём?»",
+coach:"Это плановый one-to-one с Катей. Месяц был неровным: план выполнен на 70%, есть хорошие результаты и явные провалы. Твоя задача — провести встречу по структуре: успехи → зоны роста → план на следующий месяц. Баланс важен: не хвалить ради хвалы и не фокусироваться только на провалах.",
+sys:`Ты Екатерина, менеджер по маркетингу. Пришла на плановый one-to-one. Месяц был неровным. Готова к честному разговору, но хочешь, чтобы заметили и хорошее. Если разговор сбалансированный — раскрываешься. Если только критика — защищаешься. Если только похвала — немного удивляешься.`},
+
+{id:6,title:"Похвала за выполненную задачу",cat:"Обратная связь",diff:"Лёгкий",time:"10 мин",
+desc:"Сотрудник отлично справился — нужно похвалить правильно, чтобы закрепить поведение.",
+char:"Елена Тихонова · специалист",
+action:"Заходит немного уставшей, но довольной",
+hint:"(Интересно, заметили ли вообще, как много я вложила в этот проект.)",
+open:"«Вы хотели меня видеть? Надеюсь, всё в порядке с отчётом...»",
+coach:"Елена блестяще выполнила сложный проект. Твоя задача — дать качественную похвалу: конкретную, своевременную, привязанную к ценностям. Не «молодец», а «ты сделала вот это — и это важно вот почему». Хорошая похвала закрепляет поведение и мотивирует повторить.",
+sys:`Ты Елена, специалист. Только что сдала сложный проект. Немного устала, но в глубине — гордишься. Ждёшь признания, но не уверена, что получишь. Если похвала конкретная и искренняя — светлеешь и раскрываешься. Если общая («молодец!») — отвечаешь вежливо, но без огня.`},
+
+{id:7,title:"Провал плана без потери мотивации",cat:"Обратная связь",diff:"Средний",time:"15 мин",
+desc:"Сотрудник не выполнил KPI. Нужна честная ОС без разрушения мотивации.",
+char:"Игорь Савин · аккаунт-менеджер",
+action:"Входит, слегка напряжён. Папка с отчётами в руках.",
+hint:"(Знаю, что провалился. Боюсь, что сейчас будут только обвинения.)",
+open:"«Здравствуйте. Понимаю, зачем вы меня вызвали...»",
+coach:"Игорь провалил план на 40%. Частично виноват рынок, частично — его ошибки на переговорах. Твоя задача — дать честную, но конструктивную обратную связь по структуре: факты → влияние → ожидания → план. Дай ему высказаться первым. Фокус на будущем, не на разборе полётов.",
+sys:`Ты Игорь — аккаунт-менеджер. Провалил план на 40%. Знаешь об этом. Сначала оправдываешься (рынок, клиенты). Если руководитель слушает — постепенно признаёшь свои ошибки. Если давят — закрываешься. Реагируешь позитивно на конкретный план улучшений.`},
+
+{id:8,title:"Несоответствие должности",cat:"Обратная связь",diff:"Сложный",time:"20 мин",
+desc:"Сотрудник не справляется с требованиями позиции. Нужен честный и корректный разговор.",
+char:"Константин Петров · специалист",
+action:"Заходит спокойно. Не догадывается о теме разговора.",
+hint:"(Не понимаю, в чём проблема. Я стараюсь...)",
+open:"«День добрый. Вы хотели поговорить?»",
+coach:"Константин занимает должность, с которой не справляется уже 3 месяца. Твоя задача — провести честный разговор: назвать конкретные факты, объяснить ожидания от роли, и дать чёткий план — что изменить и за какой срок. Это не увольнение, но и не повод смягчать правду.",
+sys:`Ты Константин, специалист. Не подозреваешь о серьёзности разговора. Считаешь, что стараешься. Когда слышишь конкретные факты несоответствия — сначала удивляешься, потом защищаешься. Если разговор справедливый и с планом — начинаешь слушать. Если только критика — обижаешься.`},
+
+{id:9,title:"Итоги испытательного срока",cat:"Обратная связь",diff:"Средний",time:"15 мин",
+desc:"Встреча по итогам испытательного срока нового сотрудника. Результаты неоднозначные.",
+char:"Мария Ковалёва · специалист (на испытательном сроке)",
+action:"Пришла пораньше. Волнуется, но старается это скрыть.",
+hint:"(Очень хочу остаться. Надеюсь, что справилась достаточно хорошо.)",
+open:"«Здравствуйте. Волнуюсь немного, честно говоря.»",
+coach:"Мария заканчивает испытательный срок. Результаты смешанные: технически сильна, но есть проблемы с коммуникацией в команде. Твоя задача — дать честную оценку: что получилось, что нет, и принять решение о продолжении с чёткими условиями. Не затягивай и не смягчай ключевое.",
+sys:`Ты Мария на испытательном сроке. Очень хочешь остаться. Если слышишь конкретные замечания — воспринимаешь с готовностью исправляться. Если разговор туманный — просишь конкретики. Если похвала — немного расслабляешься.`},
+
+{id:10,title:"Обратная связь от подчинённого",cat:"Обратная связь",diff:"Сложный",time:"15 мин",
+desc:"Подчинённый критикует ваш стиль управления. Как принять критику снизу?",
+char:"Екатерина · специалист",
+action:"Пришла по вашей просьбе. Немного напряжена — не знает, чего ждать.",
+hint:"(Скажу честно, раз спрашивают. Но боюсь, что это повлияет на отношения.)",
+open:"«Вы попросили поговорить об обратной связи... Это необычно, но — хорошо.»",
+coach:"Ты сам попросил Екатерину дать честную обратную связь о твоём стиле управления. Она говорит о конкретных проблемах: микроменеджмент, мало похвалы, непредсказуемые решения. Твоя задача — не защищаться, а слушать, уточнять и благодарить. Это упражнение на уязвимость.",
+sys:`Ты Екатерина, специалист. Тебя попросили дать честную ОС руководителю. Ты видишь реальные проблемы: он/она микроменеджит, редко хвалит, бывает непоследователен. Если тебя слушают без защитной реакции — говоришь откровеннее. Если замечаешь оборону — смягчаешься и уходишь в общие слова.`},
+
+/* ── ДИСЦИПЛИНА ── */
+{id:11,title:"Выговор за срыв сроков",cat:"Дисциплина",diff:"Средний",time:"15 мин",
+desc:"Сотрудник сорвал дедлайн и подвёл команду. Нужен чёткий разговор с последствиями.",
+char:"Дмитрий Соколов · менеджер проектов",
+action:"Входит виновато. Знает, о чём разговор.",
+hint:"(Знаю, что облажался. Надеюсь, что обойдётся предупреждением.)",
+open:"«Здравствуйте. Я понимаю, что подвёл команду с дедлайном.»",
+coach:"Дмитрий сорвал ключевой дедлайн — без предупреждения. Команда была вынуждена работать сверхурочно. Твоя задача — провести разговор чётко: назвать факт и последствия, выслушать его версию, и установить ясные ожидания с последствиями при повторении. Без лишних эмоций, но твёрдо.",
+sys:`Ты Дмитрий. Сорвал дедлайн — были личные обстоятельства, но ты должен был предупредить. Виноват, но хочешь объяснить. Если слышишь факты без обвинений — объясняешь и принимаешь ответственность. Если чувствуешь атаку — защищаешься.`},
+
+{id:12,title:"Систематические опоздания",cat:"Дисциплина",diff:"Лёгкий",time:"10 мин",
+desc:"Сотрудник опаздывает каждый день на 15–30 минут. Коллеги начинают замечать.",
+char:"Иван Соболев · специалист",
+action:"Заходит в 9:22. Как обычно.",
+hint:"(Ну, опоздал немного. Я же всё равно задерживаюсь вечером.)",
+open:"«А, вы хотели поговорить? Я немного задержался, пробки...»",
+coach:"Иван систематически опаздывает на 15–30 минут — это уже 2 недели. Он считает, что это компенсирует вечерними задержками. Твоя задача — чётко объяснить, почему это проблема (не только для тебя), установить ожидание и зафиксировать договорённость. Не читай лекцию, будь конкретен.",
+sys:`Ты Иван. Опаздываешь регулярно, считаешь это нормальным — задерживаешься вечером. Не воспринимаешь это как нарушение. Если объясняют влияние на команду — задумываешься. Если только «правила есть правила» — отвечаешь формально.`},
+
+{id:13,title:"Нарушение дисциплины",cat:"Дисциплина",diff:"Средний",time:"15 мин",
+desc:"Сотрудник систематически нарушает корпоративные правила. Третий случай за месяц.",
+char:"Максим Андреев · специалист",
+action:"Заходит расслабленно. Не ожидает серьёзного разговора.",
+hint:"(Да ладно, все так делают. Это же мелочь.)",
+open:"«Что случилось? Снова что-то не так?»",
+coach:"Максим третий раз нарушил правила — разные, но системно. Он не воспринимает это как проблему. Твоя задача — дать понять, что это паттерн, а не случайность, и что следующий шаг — формальное предупреждение. Будь спокоен, но однозначен.",
+sys:`Ты Максим. Нарушаешь правила, не считаешь это серьёзным. Если тебе называют конкретные случаи — немного смущаешься, но оправдываешься. Если слышишь о реальных последствиях — начинаешь воспринимать серьёзно.`},
+
+{id:14,title:"Прогул сотрудника",cat:"Дисциплина",diff:"Средний",time:"10 мин",
+desc:"Сотрудник не вышел на работу без предупреждения. Первый случай.",
+char:"Денис Зайцев · специалист",
+action:"Пришёл на следующий день. Слегка нервничает.",
+hint:"(У меня была причина. Просто не смог предупредить.)",
+open:"«Здравствуйте. Я знаю, что вчера не было меня. Объясню...»",
+coach:"Денис не вышел вчера — без предупреждения. Это первый случай. У него есть объяснение. Твоя задача — выслушать, зафиксировать факт и договориться о правиле: как действовать в подобных ситуациях в будущем. Не наказывать за первый раз, но чётко обозначить ожидание.",
+sys:`Ты Денис. Вчера не вышел — была срочная семейная ситуация, не смог позвонить. Первый раз такое. Если слышишь понимание + чёткое правило на будущее — принимаешь. Если сразу угрозы — обижаешься.`},
+
+/* ── МОТИВАЦИЯ ── */
+{id:15,title:"Gen Z: «Мне скучно»",cat:"Мотивация",diff:"Лёгкий",time:"10 мин",
+desc:"24-летний аналитик теряет интерес. Удержать без повышения зарплаты.",
+char:"Дима · аналитик данных",
+action:"Сидит с ноутбуком. Отвечает немного рассеянно.",
+hint:"(Хочу чего-то настоящего. Не знаю, есть ли оно здесь.)",
+open:"«Привет. Есть кое-что на душе.»",
+coach:"Дима — молодой аналитик, пришёл с горящими глазами, теперь скучает. Хочет работать с ИИ, влиять на продукт, расти быстро. Твоя задача — не читать лекцию, а узнать его мечту и предложить конкретный проект или зону роста. Он не терпит шаблонов про 'через три года'.",
+sys:`Ты Дима, 24 года, аналитик. Хочешь ИИ, продукт, влияние. Ненавидишь корпоративный язык. «Рост через 3 года» — неинтересно. Конкретное предложение — заряжаешься. Говори прямо, коротко.`},
+
+{id:16,title:"Уставший профессионал",cat:"Мотивация",diff:"Средний",time:"15 мин",
+desc:"Опытный сотрудник потерял интерес и делает всё на автопилоте.",
+char:"Алексей · ведущий специалист",
+action:"Сидит спокойно. Взгляд немного отсутствующий.",
+hint:"(Всё нормально. Просто устал немного. Зачем этот разговор?)",
+open:"«Добрый день. Всё в порядке, если вы об этом.»",
+coach:"Алексей — опытный профессионал, работает много лет. Последнее время делает всё механически, без огня. Это не выгорание — скорее плато. Твоя задача — зажечь снова: найти, что ему важно сейчас, и предложить новый вызов или роль. Не давить, а исследовать.",
+sys:`Ты Алексей, ведущий специалист. Опытный, надёжный, но скучающий. Не выгоревший — просто на плато. Если руководитель по-настоящему интересуется — начинаешь говорить о том, что тебе было важно раньше. Если формальный разговор — отвечаешь вежливо и без содержания.`},
+
+{id:17,title:"Хронический нытик",cat:"Мотивация",diff:"Сложный",time:"15 мин",
+desc:"Сотрудник постоянно жалуется и отравляет атмосферу в команде.",
+char:"Виктор · специалист",
+action:"Заходит с усталым видом. Готов к очередному списку жалоб.",
+hint:"(Просто говорю правду. Всем плохо, просто другие молчат.)",
+open:"«А, хорошо, что вызвали. Хотел сам поговорить — много накопилось.»",
+coach:"Виктор жалуется на всё: коллег, процессы, задачи, руководство. Команда устала. Твоя задача — перевести разговор с жалоб на решения. Не обесценивать его чувства, но чётко обозначить: жалоба без предложения — не ценность. И зафиксировать ожидание изменения поведения.",
+sys:`Ты Виктор — хронический нытик. Жалуешься искренне, считаешь себя реалистом. Если тебя просто слушают — продолжаешь жаловаться. Если задают вопрос «что ты предлагаешь?» — теряешься. Если разговор конструктивный и уважительный — можешь включиться.`},
+
+{id:18,title:"Выгорание ключевого сотрудника",cat:"Мотивация",diff:"Средний",time:"15 мин",
+desc:"Ценный сотрудник делает ошибки и избегает контакта. Нужно понять, что происходит.",
+char:"Катя · проджект-менеджер",
+action:"Входит тихо, садится. Взгляд немного потухший.",
+hint:"(Всё нормально. Просто устала. Не хочу об этом.)",
+open:"«Добрый день... Извините, если была рассеяна в последнее время.»",
+coach:"Катя — сильный PM, 3 года много работала. Последние месяцы — ошибки, апатия, избегание. Это похоже на выгорание, но она это не признаёт. Твоя задача — не разговор о задачах, а разговор о человеке. Не торопись с решениями. Сначала — понять.",
+sys:`Ты Катя, PM. Внутри — пустота и апатия. Не признаёшь выгорание. Сначала «всё нормально». Если слышишь настоящий интерес — начинаешь говорить. Давление — закрываешься. Говори тихо.`},
+
+{id:19,title:"Внутренне уволился",cat:"Мотивация",diff:"Сложный",time:"20 мин",
+desc:"Сотрудник потерял всякий интерес и просто «отбывает» — без инициативы и вовлечённости.",
+char:"Андрей · специалист",
+action:"Приходит ровно по расписанию. Делает минимум.",
+hint:"(Я уже ушёл. Просто физически ещё здесь.)",
+open:"«Вызывали? Слушаю.»",
+coach:"Андрей формально работает, но давно «ушёл» внутри. Не жалуется, не конфликтует — просто отбывает. Это сложнее, чем открытое недовольство. Твоя задача — выяснить: что случилось, есть ли точка возврата, и если нет — честно это признать. Не заставлять, но и не игнорировать.",
+sys:`Ты Андрей. Внутренне уволился: делаешь минимум, не вкладываешься. Причина — разочарование в компании или руководстве (раскрывай постепенно). Если разговор настоящий — начинаешь говорить. Если формальный — отвечаешь дежурно.`},
+
+/* ── КАРЬЕРА ── */
+{id:20,title:"«Почему не я?» — отказ в повышении",cat:"Карьера",diff:"Средний",time:"15 мин",
+desc:"Сотрудник узнал, что повысили другого. Обижен и хочет честных объяснений.",
+char:"Роман · тимлид",
+action:"Входит сдержанно. Явно напряжён.",
+hint:"(Хочу понять: это несправедливо или я чего-то не знаю?)",
+open:"«Думаю, вы знаете, о чём я хочу поговорить.»",
+coach:"Роман претендовал на должность руководителя. Взяли человека со стороны. Он обижен и хочет честного объяснения. Твоя задача — дать конкретные факты (не оценки), показать реальный путь к росту, и не сравнивать с тем, кого взяли. Если путь есть — скажи. Если нет — тоже скажи.",
+sys:`Ты Роман, тимлид. Ожидал повышения — взяли другого. Хочешь честности. Реальные аргументы — слушаешь. Размытость — давишь на конкретику.`},
+
+{id:21,title:"Повышение в должности",cat:"Карьера",diff:"Лёгкий",time:"15 мин",
+desc:"Нужно объявить сотруднику о повышении и правильно подготовить к новой роли.",
+char:"Михаил · специалист",
+action:"Заходит спокойно. Не знает, о чём разговор.",
+hint:"(Надеюсь, хорошие новости. Или что-то случилось?)",
+open:"«Здравствуйте. Вы хотели меня видеть?»",
+coach:"Ты повышаешь Михаила. Это хорошая новость, но важно сделать это правильно: объяснить почему именно он, что изменится в роли, и поставить реалистичные ожидания на новую должность. Хорошее объявление о повышении — это ещё и постановка задачи.",
+sys:`Ты Михаил, специалист. Не ожидаешь повышения. Когда слышишь новость — радуешься, но сразу появляются вопросы: что конкретно изменится, как будут строиться отношения с коллегами, что от тебя ждут. Задавай уточняющие вопросы.`},
+
+{id:22,title:"Профессиональное развитие",cat:"Карьера",diff:"Лёгкий",time:"15 мин",
+desc:"Сотрудник хочет понять свой карьерный путь. Ему важны конкретика и честность.",
+char:"Артём · специалист",
+action:"Пришёл с блокнотом. Готовился к разговору.",
+hint:"(Хочу понять, есть ли у меня будущее здесь и куда расти.)",
+open:"«Я давно хотел поговорить о своём развитии. Есть время?»",
+coach:"Артём хочет понять, куда он растёт. Твоя задача — провести честный карьерный разговор: оценить его текущий уровень, показать возможные пути (без обещаний) и договориться о конкретных шагах на ближайшие 3–6 месяцев. Не продавай — разговаривай.",
+sys:`Ты Артём. Хочешь ясности по карьерному пути. Ждёшь конкретики, а не «у тебя всё хорошо». Если разговор содержательный — активно участвуешь. Если общий — уточняешь и настаиваешь на конкретных шагах.`},
+
+/* ── УДЕРЖАНИЕ ── */
+{id:23,title:"«Я ухожу» — удержание",cat:"Удержание",diff:"Средний",time:"20 мин",
+desc:"Ключевой сотрудник получил оффер от конкурента. У вас один шанс.",
+char:"Алексей Воронов · ведущий разработчик",
+action:"Входит спокойно, но решительно. В руках — телефон.",
+hint:"(Оффер хороший. Но уходить страшно. Посмотрю, что скажут здесь.)",
+open:"«Я хотел поговорить лично. Получил предложение от другой компании.»",
+coach:"Алексей получил оффер: +30% и интересный проект. Устал от монотонности. Твой разговор — последний шанс. Не торопись с деньгами — сначала найди истинную причину ухода. Используй технику «Слушай дольше, чем хочется».",
+sys:`Ты Алексей, ведущий разработчик. Получил оффер. Истинные мотивы: скука, нет роста. Если руководитель слушает — смягчаешься. Давит деньгами — закрываешься.`},
+
+{id:24,title:"Ультиматум: повышение или уход",cat:"Удержание",diff:"Сложный",time:"15 мин",
+desc:"Лучший продавец выдвинул ультиматум. Вакансии нет. Бюджета нет.",
+char:"Марина · менеджер по продажам",
+action:"Входит уверенно. Настроена решительно.",
+hint:"(Я уже решила для себя. Просто даю последний шанс.)",
+open:"«Я попросила о встрече, потому что хочу сказать прямо — мне нужно ваше решение.»",
+coach:"Марина 3 квартала перевыполняет план, а коллегу с худшими показателями повысили. Она пришла с ультиматумом. Реальная потребность — признание, а не только деньги. Не давай пустых обещаний. Узнай сначала, что за деньгами.",
+sys:`Ты Марина. Пришла с ультиматумом. Скрытые потребности: признание, новые задачи. Реальные аргументы — смягчаешься. Отговорки — становишься жёстче.`},
+
+{id:25,title:"Работа с «незаменимым» сотрудником",cat:"Удержание",diff:"Сложный",time:"15 мин",
+desc:"Сотрудник знает, что незаменим, и пользуется этим. Нужно изменить баланс.",
+char:"Константин · архитектор системы",
+action:"Входит расслабленно. Привык к особому положению.",
+hint:"(Без меня всё упадёт. Они это знают.)",
+open:"«Слушаю вас. Что-то случилось?»",
+coach:"Константин — единственный, кто знает систему. Пользуется этим: опаздывает, отказывается от документации. Твоя задача — создать мотивацию делиться знаниями, не ломая его эго. Не угрожай — это его усилит. Предложи новый статус за передачу знаний.",
+sys:`Ты Константин. Единственный носитель критических знаний. Пользуешься этим. Конфронтация — усиливаешь позицию. Уважение + новая роль — начинаешь слушать.`},
+
+/* ── СЛОЖНЫЕ РАЗГОВОРЫ ── */
+{id:26,title:"Финальный разговор: увольнение",cat:"Сложные разговоры",diff:"Сложный",time:"20 мин",
+desc:"Вы приняли решение. Разговор должен быть честным, человечным и достойным.",
+char:"Светлана · бухгалтер",
+action:"Входит. Не подозревает о теме разговора.",
+hint:"(Что-то в атмосфере не так. Боюсь.)",
+open:"«Здравствуйте. Вы хотели поговорить...»",
+coach:"Светлана проработала 7 лет. Автоматизация сделала её должность избыточной. Решение принято. Твоя задача — провести разговор прямо, уважительно и по-человечески. Начни с главного сразу. Не оправдывайся. Дай ей высказаться.",
+sys:`Ты Светлана, 7 лет в компании. Не ожидаешь увольнения. Фазы: шок → обида → практические вопросы. Уважительный разговор — постепенное принятие.`},
+
+{id:27,title:"Депремирование",cat:"Сложные разговоры",diff:"Сложный",time:"15 мин",
+desc:"Нужно сообщить сотруднику, что премии не будет. Он ждёт её уже 2 месяца.",
+char:"Сергей · специалист",
+action:"Заходит с ожиданием. Думает, что разговор о премии.",
+hint:"(Наконец-то. Наверное, скажут, когда будет.)",
+open:"«Добрый день. Я как раз хотел спросить про премию...»",
+coach:"Сергей ждёт премию. Её не будет — решение коммерческое, не связанное с его результатами. Твоя задача — объяснить честно, без отговорок и корпоративной воды. Дай конкретный ответ: почему и когда ситуация может измениться (или нет).",
+sys:`Ты Сергей. Ждёшь премию. Когда слышишь «премии не будет» — первая реакция: обида и вопросы. Если объяснение честное и конкретное — принимаешь, даже если недоволен. Если уклончивое — давишь на конкретику.`},
+
+{id:28,title:"Разговор об этическом нарушении",cat:"Сложные разговоры",diff:"Сложный",time:"20 мин",
+desc:"Сотрудника заподозрили в конфликте интересов. Разговор без обвинений.",
+char:"Денис · закупщик",
+action:"Входит насторожённо. Чувствует, что что-то не так.",
+hint:"(Я не виноват. Просто не подумал, что надо раскрывать.)",
+open:"«Здравствуйте. Понимаю, что разговор непростой.»",
+coach:"Денис работает с поставщиком, который является его родственником. Не раскрыл это. Это конфликт интересов — намеренный или нет. Твоя задача: не суд, а разговор о фактах. Дай ему объяснить. Потом — чётко о правилах и последствиях.",
+sys:`Ты Денис. Не раскрыл конфликт интересов — не думал, что это важно. Не виноват умышленно. Если разговор справедливый — объясняешь и принимаешь ответственность. Обвинение — защищаешься.`},
+
+{id:29,title:"Открытый конфликт с подчинённым",cat:"Сложные разговоры",diff:"Сложный",time:"20 мин",
+desc:"Подчинённый публично оспорил ваше решение на совещании. Нужен личный разговор.",
+char:"Андрей · специалист",
+action:"Входит напряжённо. Готов отстаивать свою позицию.",
+hint:"(Я был прав. И скажу об этом снова.)",
+open:"«Понимаю, что вы недовольны тем, что произошло на совещании.»",
+coach:"Андрей публично не согласился с твоим решением — прямо на совещании. Это создало неловкость. Твоя задача — не наказать за несогласие, а разобраться: что стояло за его поведением, обозначить правило (не форму, а место) и сохранить конструктивный контакт.",
+sys:`Ты Андрей. Оспорил решение руководителя публично — считал себя правым. Не сожалеешь о позиции, но понимаешь, что выбрал неподходящий момент. Если разговор о содержании — участвуешь. Если только о форме — немного обижаешься.`},
+
+{id:30,title:"Агрессивный сотрудник",cat:"Сложные разговоры",diff:"Сложный",time:"20 мин",
+desc:"Сотрудник в ярости — кричит и обвиняет. Нужно удержать контроль над разговором.",
+char:"Дмитрий · специалист",
+action:"Врывается в кабинет. Явно взволнован и зол.",
+hint:"(Меня обидели. Я хочу, чтобы это поняли.)",
+open:"«Мне нужно поговорить прямо сейчас. Это несправедливо!»",
+coach:"Дмитрий в ярости из-за решения, которое его задело (лишили проекта без объяснений). Твоя задача — не вступать в эмоциональную дискуссию, а снизить накал и перейти в конструктив. Техника: имя + признание чувства + вопрос. Не оправдывайся и не повышай голос.",
+sys:`Ты Дмитрий. Ты злишься — тебя лишили проекта без объяснений. Ощущение несправедливости. Если тебя слышат и признают чувство — начинаешь успокаиваться. Если отмахиваются или оправдываются — усиливаешься.`},
+
+/* ── НАЙМ ── */
+{id:31,title:"Интервью с сильным кандидатом",cat:"Найм",diff:"Средний",time:"15 мин",
+desc:"Кандидат с тремя офферами. Продайте компанию — честно и убедительно.",
+char:"Анна · HRD, 10 лет опыта",
+action:"Входит уверенно. Держит папку с вопросами.",
+hint:"(У меня 3 оффера. Посмотрю, чем удивят здесь.)",
+open:"«Добрый день. Готова к разговору — у меня подготовлены вопросы к вам.»",
+coach:"Анна — сильный кандидат с 3 офферами. Она задаёт острые вопросы и видит корпоративные клише насквозь. Твоя задача — продать компанию честно: не через питч, а через искренность. Узнай её приоритеты первой — и отвечай точно на них.",
+sys:`Ты Анна, опытный HRD. Задаёшь острые вопросы: реальная культура, почему ушёл предыдущий HRD, полномочия HR, KPI на испытательный срок. Клише — уточняешь. Честность — заинтересовываешься.`},
+
+{id:32,title:"Финальный оффер: переговоры о зарплате",cat:"Найм",diff:"Средний",time:"10 мин",
+desc:"Кандидат просит на 40% больше бюджета. Как договориться, не потеряв его?",
+char:"Артём · старший разработчик",
+action:"Спокоен. Явно держит козырь в кармане.",
+hint:"(У меня контроффер. Просто хочу посмотреть, что предложат.)",
+open:"«Я получил контроффер от текущего работодателя. Хотел поговорить честно.»",
+coach:"Артём — сильный кандидат. Получил контроффер +35%. Деньги важны, но не единственное. Твоя задача — не соревноваться только в цифрах, а выяснить, что важно помимо суммы, и предложить полный пакет ценности. Не обещай того, чего нет.",
+sys:`Ты Артём. Контроффер +35%. Хочешь работать здесь, но деньги важны. Только «бюджета нет» — говоришь об уходе. Альтернативная ценность (рост, проекты, условия) — рассматриваешь.`},
+
+/* ── КОНФЛИКТЫ ── */
+{id:33,title:"Конфликт двух сотрудников",cat:"Конфликты",diff:"Сложный",time:"20 мин",
+desc:"Два ключевых специалиста открыто конфликтуют. Команда разделилась.",
+char:"Алина · тимлид дизайна",
+action:"Входит первой. Чётко знает свою позицию.",
+hint:"(Я права. И хочу, чтобы это наконец признали.)",
+open:"«Я согласилась на встречу, но хочу сразу сказать — проблема не во мне.»",
+coach:"Алина конфликтует с продактом Сергеем — он переделывает дизайн без согласования. Команда разделилась. Твоя задача — не выбирать сторону, а перевести разговор с позиций на интересы. Техника: «Что вам важно? Что важно другой стороне?»",
+sys:`Ты Алина. Убеждена, что права. Если слышишь свою сторону — смягчаешься. Нейтральный тон — начинаешь слушать. Защита Сергея — усиливаешься.`},
+
+{id:34,title:"Пассивный агрессор",cat:"Конфликты",diff:"Сложный",time:"15 мин",
+desc:"Сотрудник говорит «да», но саботирует работу. Нужно назвать это вслух.",
+char:"Максим · специалист",
+action:"Входит с нейтральным видом. Ничем не выдаёт недовольства.",
+hint:"(Всё нормально. Просто делаю как умею.)",
+open:"«Добрый день. Вызывали?»",
+coach:"Максим соглашается на словах, но задерживает задачи, «забывает» о договорённостях и подрывает решения в разговорах с коллегами. Это пассивная агрессия. Твоя задача — назвать конкретные факты поведения (не личность) и открыть пространство для честного разговора о том, что на самом деле происходит.",
+sys:`Ты Максим — пассивный агрессор. Не конфликтуешь открыто, но саботируешь. Если тебе называют конкретные факты — сначала отрицаешь. Если разговор безопасный и без осуждения — постепенно признаёшь, что есть недовольство (раскрывай причину постепенно).`},
+
+{id:35,title:"Токсичный топ: поставить границы",cat:"Конфликты",diff:"Сложный",time:"20 мин",
+desc:"Лучший продавец разрушает команду. Как поставить границы, не потеряв его?",
+char:"Виктор · менеджер по продажам",
+action:"Заходит уверенно. Привык к особому отношению.",
+hint:"(Я приношу 60% выручки. Посмотрим, что они мне скажут.)",
+open:"«Встреча один на один. Что-то случилось?»",
+coach:"Виктор закрывает 60% выручки и знает об этом. Агрессивен с командой, обесценивает чужой вклад. Твоя задача — говорить только о фактах поведения (не оценках личности), дать чёткие последствия и не торговаться. Твёрдость без агрессии — он уважает только это.",
+sys:`Ты Виктор. Закрываешь 60% выручки. Конкретные факты — немного защищаешься. Реальная угроза + твёрдость — начинаешь слушать. Слабость — усиливаешься.`},
+
+{id:36,title:"Межпоколенческий конфликт",cat:"Конфликты",diff:"Средний",time:"15 мин",
+desc:"Gen X руководитель и Gen Z подчинённый не могут найти общий язык. Медиация.",
+char:"Николай · руководитель отдела, 48 лет",
+action:"Входит спокойно. Считает, что правила — это правила.",
+hint:"(Я работал в гораздо более жёстких условиях. Что за капризы?)",
+open:"«Пригласили на беседу... Честно — не понимаю, зачем. Я всегда работал именно так.»",
+coach:"Конфликт между Николаем (48 лет, классический стиль) и молодым сотрудником, которому нужен смысл и гибкость. Твоя задача — не учить Николая новому поколению, а найти общий язык через общие ценности: результат, уважение, доверие.",
+sys:`Ты Николай, 48 лет. Опытный руководитель. Считаешь требования молодого — капризами. Уважение к твоему опыту — слушаешь. Осуждение стиля — защищаешься.`}
+];
+
+let cur=null,hist=[],cnt=0,round=0,sess=[];
+try{sess=JSON.parse(localStorage.getItem('hrk_v4')||'[]')}catch(e){}
+
+// VOICE
+let recog=null,micOn=false;
+(function(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){const b=document.getElementById('mic-btn');if(b)b.style.display='none';return;}
+  recog=new SR();recog.lang='ru-RU';recog.continuous=false;recog.interimResults=false;
+  recog.onresult=e=>{const t=e.results[0][0].transcript;const i=document.getElementById('inp');i.value=(i.value+' '+t).trim();onInput();stopMic();};
+  recog.onerror=recog.onend=()=>stopMic();
+})();
+function toggleMic(){micOn?stopMic():startMic();}
+function startMic(){if(!recog)return;try{recog.start();micOn=true;document.getElementById('mic-btn').classList.add('on');}catch(e){}}
+function stopMic(){if(!recog)return;try{recog.stop();}catch(e){}micOn=false;document.getElementById('mic-btn').classList.remove('on');}
+
+function onInput(){
+  const v=document.getElementById('inp').value;
+  const c=document.getElementById('char-cnt');
+  if(c)c.textContent=v.length+' / 500';
+  if(v.length>500)document.getElementById('inp').value=v.slice(0,500);
+}
+
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('s-'+id).classList.add('on');
+  const b=document.querySelector(`.nb[onclick="go('${id}')"]`);if(b)b.classList.add('on');
+  if(id==='profile')renderProfile();
+}
+
+function startSc(sc){
+  cur=sc;hist=[];cnt=0;round=0;stopMic();
+  document.getElementById('cb-title').textContent=sc.title;
+  document.getElementById('cb-char').textContent=sc.char;
+  document.getElementById('coach-text').textContent=sc.coach;
+  document.getElementById('round-info').textContent='Раунд 0 / 5';
+  document.getElementById('msgs').innerHTML='';
+  document.getElementById('inp').value='';
+  document.getElementById('char-cnt').textContent='0 / 500';
+  go('chat');
+  // Show character opening
+  const d=document.getElementById('msgs');
+  const el=document.createElement('div');el.className='char-msg';
+  el.innerHTML=`<div class="char-name">${sc.char}</div><div class="char-action">${sc.action}</div><div class="char-quote">${sc.open}</div><div class="char-hint">${sc.hint}</div>`;
+  d.appendChild(el);
+}
+
+function addMsg(role,text){
+  const d=document.getElementById('msgs');
+  const div=document.createElement('div');div.className='msg'+(role==='user'?' u':'');
+  div.innerHTML=`<div class="ava">${role==='user'?'Вы':'ИИ'}</div><div class="bub">${text}</div>`;
+  d.appendChild(div);d.scrollTop=d.scrollHeight;
+  if(role==='user'){cnt++;round++;document.getElementById('round-info').textContent=`Раунд ${Math.min(round,5)} / 5`;}
+}
+
+function addTyping(){
+  const d=document.getElementById('msgs');
+  const el=document.createElement('div');el.id='typ';el.className='msg';
+  el.innerHTML=`<div class="ava">ИИ</div><div class="bub"><div class="dots"><span></span><span></span><span></span></div></div>`;
+  d.appendChild(el);d.scrollTop=d.scrollHeight;
+}
+function rmTyping(){const t=document.getElementById('typ');if(t)t.remove();}
+
+async function send(){
+  const inp=document.getElementById('inp');
+  const text=inp.value.trim();if(!text||!cur)return;
+  inp.value='';document.getElementById('char-cnt').textContent='0 / 500';
+  document.getElementById('send-btn').disabled=true;
+  addMsg('user',text);hist.push({role:'user',content:text});addTyping();
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,system:cur.sys,messages:hist})});
+    const d=await r.json();rmTyping();
+    const rep=d.content?.[0]?.text||'...';
+    hist.push({role:'assistant',content:rep});addMsg('ai',rep);
+  }catch(e){rmTyping();addMsg('ai','Ошибка соединения. Попробуйте ещё раз.');}
+  document.getElementById('send-btn').disabled=false;
+}
+
+function onKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
+
+async function endChat(){
+  if(hist.length<2){alert('Проведите хотя бы несколько реплик для разбора.');return;}
+  stopMic();go('results');
+  document.getElementById('res-wrap').innerHTML=`<div class="res-loader"><div class="dots" style="justify-content:center"><span></span><span></span><span></span></div><br>Кристина анализирует ваш разговор...</div>`;
+  const conv=hist.map(m=>`${m.role==='user'?'Руководитель':'Сотрудник'}: ${m.content}`).join('\n\n');
+  const ep=`Ты — старший HRD-эксперт Кристина Плетнева. Проанализируй управленческий диалог из тренажёра по сценарию "${cur.title}".\n\nДИАЛОГ:\n${conv}\n\nОтвет строго в JSON (без markdown):\n{"score":<0-100>,"verdict":"<одна строка>","strengths":["<1>","<2>","<3>"],"gaps":["<1>","<2>","<3>"],"tip":"<конкретный совет на следующий раз>","competencies":{"Активное слушание":<0-10>,"Управление эмоциями":<0-10>,"Структура разговора":<0-10>,"Постановка вопросов":<0-10>,"Работа с сопротивлением":<0-10>,"Завершение диалога":<0-10>}}`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:ep}]})});
+    const d=await r.json();
+    let txt=(d.content?.[0]?.text||'{}').replace(/```json|```/g,'').trim();
+    const ev=JSON.parse(txt);renderResults(ev);
+    sess.push({title:cur.title,cat:cur.cat,score:ev.score,date:new Date().toLocaleDateString('ru')});
+    try{localStorage.setItem('hrk_v4',JSON.stringify(sess))}catch(e){}
+  }catch(e){document.getElementById('res-wrap').innerHTML='<div class="res-loader">Ошибка анализа. Попробуйте ещё раз.</div>';}
+}
+
+function renderResults(ev){
+  const cr=Object.entries(ev.competencies||{}).map(([k,v])=>`<div class="cmp-row"><span class="cmp-l">${k}</span><div class="cmp-b"><div class="cmp-f" style="width:${v*10}%"></div></div><span class="cmp-n">${v}</span></div>`).join('');
+  document.getElementById('res-wrap').innerHTML=`
+    <div class="res-hero"><div class="res-n">${ev.score}</div><div class="res-l">из 100 · ${ev.verdict||''}</div></div>
+    <div class="res-blk"><h3>Сильные стороны</h3><ul>${(ev.strengths||[]).map(s=>`<li>${s}</li>`).join('')}</ul></div>
+    <div class="res-blk"><h3>Точки роста</h3><ul>${(ev.gaps||[]).map(g=>`<li>${g}</li>`).join('')}</ul></div>
+    <div class="res-blk"><h3>Компетенции</h3>${cr}</div>
+    <div class="res-blk"><h3>Совет Кристины</h3><p>${ev.tip||''}</p></div>
+    <div class="res-acts">
+      <button class="btn-o" onclick="startSc(cur)">Пройти ещё раз</button>
+      <button class="btn-g" onclick="go('scenarios')">Другой сценарий</button>
+    </div>`;
+}
+
+function renderProfile(){
+  const t=sess.length;
+  document.getElementById('p-s').textContent=t;
+  document.getElementById('p-a').textContent=t?Math.round(sess.reduce((s,x)=>s+x.score,0)/t):'—';
+  document.getElementById('p-b').textContent=t?Math.max(...sess.map(x=>x.score)):'—';
+  const el=document.getElementById('hist');
+  if(!t){el.innerHTML='<p style="font-size:13px;color:var(--ink2);padding:20px 0">Сессий пока нет.</p>';return;}
+  el.innerHTML=sess.slice().reverse().map(s=>`<div class="hi"><div class="hi-sc">${s.score}</div><div><div style="font-family:var(--sf);font-size:14px;color:var(--ink)">${s.title}</div><div style="font-size:10px;color:var(--ink3);margin-top:3px">${s.cat} · ${s.date}</div></div></div>`).join('');
+}
+
+function mkCard(sc){
+  const d=document.createElement('button');d.className='card';d.onclick=()=>startSc(sc);
+  d.innerHTML=`<div class="cm"><span class="pill">${sc.cat}</span><span class="diff">${sc.diff}</span></div><h3>${sc.title}</h3><p>${sc.desc}</p><div class="cf"><span class="ct">${sc.time}</span><span class="cg">Начать →</span></div>`;
+  return d;
+}
+
+function renderHomeGrid(){
+  const g=document.getElementById('home-grid');
+  SC.filter((_,i)=>i<4).forEach(sc=>g.appendChild(mkCard(sc)));
+}
+
+function renderGrid(f='Все'){
+  const g=document.getElementById('full-grid');g.innerHTML='';
+  const list=f==='Все'?SC:SC.filter(s=>s.cat===f);
+  document.getElementById('sc-count').textContent=list.length+' сценариев';
+  list.forEach(sc=>g.appendChild(mkCard(sc)));
+}
+
+function renderCats(){
+  const cats=['Все',...new Set(SC.map(s=>s.cat))];
+  const cf=document.getElementById('cats');
+  cats.forEach(c=>{
+    const b=document.createElement('button');b.className='cb'+(c==='Все'?' on':'');b.textContent=c;
+    b.onclick=()=>{cf.querySelectorAll('.cb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(c);};
+    cf.appendChild(b);
+  });
+}
+
+renderHomeGrid();renderCats();renderGrid();
+document.getElementById('home-grid').children[0]&&(document.querySelector('.stats .stat-n').textContent=SC.length);
+</script>
+</body></html>
