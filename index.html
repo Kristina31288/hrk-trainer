@@ -305,9 +305,9 @@ async function send(){
   document.getElementById('send-btn').disabled=true;
   addMsg('user',text);hist.push({role:'user',content:text});addTyping();
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,system:cur.sys,messages:hist})});
+    const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer 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','HTTP-Referer':'https://kristina31288.github.io/hrk-trainer/','X-Title':'HRK Trainer'},body:JSON.stringify({model:'google/gemini-flash-1.5',max_tokens:300,messages:[{role:'system',content:cur.sys},...hist]})});
     const d=await r.json();rmTyping();
-    const rep=d.content?.[0]?.text||'...';
+    const rep=d.choices?.[0]?.message?.content||'...';
     hist.push({role:'assistant',content:rep});addMsg('ai',rep);
   }catch(e){rmTyping();addMsg('ai','Ошибка соединения. Попробуйте ещё раз.');}
   document.getElementById('send-btn').disabled=false;
@@ -322,8 +322,8 @@ async function endChat(){
   const conv=hist.map(m=>`${m.role==='user'?'Руководитель':'Сотрудник'}: ${m.content}`).join('\n\n');
   const ep=`Ты — старший HRD-эксперт Кристина Плетнева. Проанализируй управленческий диалог по сценарию "${cur.title}".\n\nДИАЛОГ:\n${conv}\n\nОтвет строго в JSON:\n{"score":<0-100>,"verdict":"<одна строка>","strengths":["<1>","<2>","<3>"],"gaps":["<1>","<2>","<3>"],"tip":"<конкретный совет>","competencies":{"Активное слушание":<0-10>,"Управление эмоциями":<0-10>,"Структура разговора":<0-10>,"Постановка вопросов":<0-10>,"Работа с сопротивлением":<0-10>,"Завершение диалога":<0-10>}}`;
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:ep}]})});
-    const d=await r.json();let txt=(d.content?.[0]?.text||'{}').replace(/```json|```/g,'').trim();
+    const r2=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer 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','HTTP-Referer':'https://kristina31288.github.io/hrk-trainer/','X-Title':'HRK Trainer'},body:JSON.stringify({model:'google/gemini-flash-1.5',max_tokens:1000,messages:[{role:'user',content:ep}]})});
+    const d=await r2.json();let txt=(d.choices?.[0]?.message?.content||'{}').replace(/```json|```/g,'').trim();
     const ev=JSON.parse(txt);renderResults(ev);
     sess.push({title:cur.title,cat:cur.cat,score:ev.score,date:new Date().toLocaleDateString('ru')});
     try{localStorage.setItem('hrk_v5',JSON.stringify(sess))}catch(e){}
