@@ -1,143 +1,155 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>HRK — ИИ Тренажёр для руководителей</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--c0:#FAF5F0;--c1:#F0DDD0;--c2:#DEB99A;--c3:#B8825A;--c4:#8A5C38;--ink:#1E0F05;--ink2:#7A5C42;--ink3:#BFA090;--sf:Georgia,'Times New Roman',serif;--ss:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
-body{font-family:var(--ss);background:var(--c0);color:var(--ink);min-height:100vh}
-.hdr{background:var(--c0);border-bottom:1px solid var(--c1);padding:0 24px;display:flex;align-items:center;position:sticky;top:0;z-index:30;height:62px;gap:16px}
-.brand{display:flex;flex-direction:column;align-items:center;margin-right:auto}
-.b-hrk{font-family:var(--sf);font-size:19px;letter-spacing:8px;color:var(--ink);font-weight:normal;line-height:1}
+body{font-family:var(--ss);background:var(--c0);color:var(--ink);min-height:100vh;font-size:15px}
+.hdr{background:var(--c0);border-bottom:1px solid var(--c1);padding:0 24px;display:flex;align-items:center;position:sticky;top:0;z-index:30;height:64px;gap:16px}
+.brand{display:flex;flex-direction:column;align-items:center;margin-right:auto;cursor:pointer}
+.b-hrk{font-family:var(--sf);font-size:19px;letter-spacing:7px;color:var(--ink);font-weight:normal;line-height:1}
 .b-line{width:100%;height:1px;background:var(--c3);margin:3px 0}
-.b-name{font-size:6px;letter-spacing:2.5px;color:var(--ink2);text-transform:uppercase}
+.b-name{font-size:7px;letter-spacing:2.5px;color:var(--ink2);text-transform:uppercase}
 .nav{display:flex;gap:0}
-.nb{background:none;border:none;padding:7px 13px;font-size:10px;cursor:pointer;color:var(--ink2);font-family:var(--ss);letter-spacing:.6px;text-transform:uppercase;position:relative;transition:color .15s}
-.nb::after{content:'';position:absolute;bottom:-1px;left:13px;right:13px;height:1px;background:var(--c3);opacity:0;transition:opacity .15s}
+.nb{background:none;border:none;padding:8px 14px;font-size:11px;cursor:pointer;color:var(--ink2);font-family:var(--ss);letter-spacing:.5px;text-transform:uppercase;position:relative;transition:color .15s}
+.nb::after{content:'';position:absolute;bottom:-1px;left:14px;right:14px;height:1.5px;background:var(--c3);opacity:0;transition:opacity .15s}
 .nb:hover{color:var(--ink)}.nb.on{color:var(--ink)}.nb.on::after,.nb:hover::after{opacity:1}
-.screen{display:none;padding:32px 24px;max-width:900px;margin:0 auto}.screen.on{display:block}
-/* HERO */
-.hero{text-align:center;padding:56px 24px 48px;border-bottom:1px solid var(--c1);margin-bottom:44px;position:relative;overflow:hidden}
-.hero-deco{position:absolute;font-family:var(--sf);font-size:140px;color:var(--c1);bottom:-16px;left:50%;transform:translateX(-50%);letter-spacing:14px;pointer-events:none;white-space:nowrap;opacity:.6;line-height:1}
-.eye{font-size:9px;letter-spacing:3px;color:var(--c3);text-transform:uppercase;margin-bottom:16px}
-.hero h1{font-family:var(--sf);font-size:clamp(30px,5vw,52px);font-weight:normal;color:var(--ink);line-height:1.25;margin-bottom:14px}
-.hero p{font-size:13px;color:var(--ink2);line-height:1.85;max-width:400px;margin:0 auto 26px}
-.btn-main{display:inline-block;border:1px solid var(--ink);color:var(--ink);padding:11px 30px;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;background:none;font-family:var(--ss);transition:all .18s}
+.screen{display:none;padding:32px 24px;max-width:920px;margin:0 auto}.screen.on{display:block}
+.hero{text-align:center;padding:52px 24px 44px;border-bottom:1px solid var(--c1);margin-bottom:40px;position:relative;overflow:hidden}
+.hero-deco{position:absolute;font-family:var(--sf);font-size:130px;color:var(--c1);bottom:-12px;left:50%;transform:translateX(-50%);letter-spacing:14px;pointer-events:none;white-space:nowrap;opacity:.55;line-height:1}
+.eye{font-size:10px;letter-spacing:3px;color:var(--c3);text-transform:uppercase;margin-bottom:14px;position:relative}
+.hero h1{font-family:var(--sf);font-size:clamp(28px,5vw,48px);font-weight:normal;color:var(--ink);line-height:1.25;margin-bottom:14px;position:relative}
+.hero p{font-size:14px;color:var(--ink2);line-height:1.85;max-width:420px;margin:0 auto 26px;position:relative}
+.btn-main{display:inline-block;border:1px solid var(--ink);color:var(--ink);padding:12px 32px;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;background:none;font-family:var(--ss);transition:all .18s;position:relative}
 .btn-main:hover{background:var(--ink);color:var(--c0)}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--c1);border:1px solid var(--c1);margin-bottom:44px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--c1);border:1px solid var(--c1);margin-bottom:40px}
 .stat{background:var(--c0);padding:22px;text-align:center}
-.stat-n{font-family:var(--sf);font-size:28px;color:var(--c3);font-weight:normal}
-.stat-l{font-size:11px;color:var(--ink2);margin-top:5px}
+.stat-n{font-family:var(--sf);font-size:32px;color:var(--c3);font-weight:normal}
+.stat-l{font-size:12px;color:var(--ink2);margin-top:5px}
 .sec{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--c1)}
-.sec-t{font-family:var(--sf);font-size:21px;font-weight:normal;color:var(--ink)}
-.sec-a{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--c3);background:none;border:none;cursor:pointer;font-family:var(--ss)}
-/* CARDS */
+.sec-t{font-family:var(--sf);font-size:20px;font-weight:normal;color:var(--ink)}
+.sec-a{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--c3);background:none;border:none;cursor:pointer;font-family:var(--ss)}
+.cats{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
+.cb{background:none;border:1px solid var(--c1);padding:5px 13px;font-size:10px;cursor:pointer;color:var(--ink2);font-family:var(--ss);letter-spacing:.7px;text-transform:uppercase;transition:all .14s}
+.cb.on,.cb:hover{border-color:var(--c3);color:var(--ink);background:var(--c1)}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
 .card{background:var(--c0);border:1px solid var(--c1);padding:18px;cursor:pointer;transition:all .16s;text-align:left;width:100%;font-family:var(--ss)}
 .card:hover{border-color:var(--c3);background:#fdf0e8}
-.card.locked{opacity:.75}
+.card.locked{opacity:.72}
 .card.locked:hover{border-color:var(--c2);background:var(--c0)}
-.cm{display:flex;align-items:center;gap:7px;margin-bottom:9px}
-.pill{font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--c4);background:var(--c1);border:1px solid var(--c2);padding:2px 8px}
-.diff{font-size:9px;color:var(--ink3);margin-left:auto}
-.lock-badge{font-size:9px;color:var(--c3);background:var(--c1);border:1px solid var(--c2);padding:2px 7px;border-radius:20px}
-.card h3{font-family:var(--sf);font-size:14px;font-weight:normal;color:var(--ink);margin-bottom:5px;line-height:1.35}
-.card p{font-size:11px;color:var(--ink2);line-height:1.6}
-.cf{display:flex;align-items:center;margin-top:11px;padding-top:10px;border-top:1px solid var(--c1)}
-.ct{font-size:10px;color:var(--ink3)}.cg{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--c3);margin-left:auto}
-.cats{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
-.cb{background:none;border:1px solid var(--c1);padding:4px 12px;font-size:9px;cursor:pointer;color:var(--ink2);font-family:var(--ss);letter-spacing:.7px;text-transform:uppercase;transition:all .14s}
-.cb.on,.cb:hover{border-color:var(--c3);color:var(--ink);background:var(--c1)}
-/* CHAT */
-.chat-hdr{background:var(--c0);border:1px solid var(--c1);padding:14px 18px;margin-bottom:0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.cm{display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.pill{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--c4);background:var(--c1);border:1px solid var(--c2);padding:3px 9px}
+.diff{font-size:11px;color:var(--ink3);margin-left:auto}
+.lock-badge{font-size:10px;color:var(--c3);background:var(--c1);border:1px solid var(--c2);padding:2px 8px;border-radius:20px}
+.card h3{font-family:var(--sf);font-size:15px;font-weight:normal;color:var(--ink);margin-bottom:6px;line-height:1.35}
+.card p{font-size:12px;color:var(--ink2);line-height:1.65}
+.cf{display:flex;align-items:center;margin-top:12px;padding-top:11px;border-top:1px solid var(--c1)}
+.ct{font-size:11px;color:var(--ink3)}.cg{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--c3);margin-left:auto}
+.chat-hdr{background:var(--c0);border:1px solid var(--c1);padding:14px 18px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .ch-eye{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--c3);margin-bottom:3px}
 .ch-title{font-family:var(--sf);font-size:16px;font-weight:normal;color:var(--ink)}
-.ch-char{font-size:11px;color:var(--ink2);margin-top:3px}
-.end-btn{border:1px solid var(--c3);background:none;color:var(--c3);padding:7px 14px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ss);white-space:nowrap;flex-shrink:0;transition:all .15s}
+.ch-char{font-size:12px;color:var(--ink2);margin-top:3px}
+.end-btn{border:1px solid var(--c3);background:none;color:var(--c3);padding:8px 15px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ss);white-space:nowrap;flex-shrink:0;transition:all .15s}
 .end-btn:hover{background:var(--c3);color:#fff}
-.coach-card{background:var(--c1);border-left:3px solid var(--c3);padding:14px 16px;font-size:12px;color:var(--ink);line-height:1.75}
-.coach-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--c4);font-weight:600;margin-bottom:7px}
-.msgs{border:1px solid var(--c1);border-top:none;height:300px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:#fff}
+.coach-card{background:var(--c1);border-left:3px solid var(--c3);padding:13px 16px;font-size:13px;color:var(--ink);line-height:1.75}
+.coach-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--c4);font-weight:600;margin-bottom:6px}
+.msgs{border:1px solid var(--c1);border-top:none;height:320px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:#fff}
 .char-msg{background:var(--c0);border:1px solid var(--c1);padding:13px 15px}
 .char-name{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--c4);margin-bottom:7px;font-weight:600}
-.char-action{font-size:12px;color:var(--ink3);font-style:italic;margin-bottom:6px;line-height:1.6}
-.char-quote{font-size:13px;color:var(--ink);line-height:1.7;margin-bottom:7px}
-.char-hint{font-size:11px;color:var(--ink3);font-style:italic;line-height:1.6}
+.char-action{font-size:12px;color:var(--ink3);font-style:italic;margin-bottom:5px;line-height:1.6}
+.char-quote{font-size:14px;color:var(--ink);line-height:1.7;margin-bottom:6px}
+.char-hint{font-size:12px;color:var(--ink3);font-style:italic;line-height:1.6}
 .msg{display:flex;gap:8px;align-items:flex-start}
 .msg.u{flex-direction:row-reverse}
-.ava{width:24px;height:24px;border:1px solid var(--c2);background:var(--c1);display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--c4);flex-shrink:0;font-family:var(--sf)}
+.ava{width:30px;height:30px;border:1px solid var(--c2);background:var(--c1);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--c4);flex-shrink:0;font-family:var(--sf);text-align:center;line-height:1.2;padding:2px}
 .msg.u .ava{background:var(--ink);color:var(--c0);border-color:var(--ink)}
-.bub{max-width:80%;padding:9px 13px;font-size:13px;line-height:1.7}
+.bub{max-width:80%;padding:10px 14px;font-size:14px;line-height:1.7}
 .msg:not(.u) .bub{background:var(--c0);color:var(--ink);border:1px solid var(--c1)}
 .msg.u .bub{background:var(--ink);color:#fff}
+.msg-name{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--c4);margin-bottom:5px;font-weight:600}
 .dots{display:flex;gap:3px;align-items:center;padding:4px 0}
 .dots span{width:5px;height:5px;background:var(--c3);border-radius:50%;animation:bl 1.2s infinite}
 .dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
 @keyframes bl{0%,80%,100%{opacity:.2}40%{opacity:1}}
-.inp-wrap{border:1px solid var(--c1);border-top:none;background:var(--c0);padding:11px 15px}
-.inp{width:100%;border:none;background:transparent;font-size:13px;font-family:var(--ss);resize:none;line-height:1.55;color:var(--ink);max-height:80px;outline:none}
-.inp::placeholder{color:var(--ink3)}
-.inp-foot{display:flex;align-items:center;gap:10px;margin-top:7px;padding-top:7px;border-top:1px solid var(--c1)}
-.inp-hint{font-size:10px;color:var(--ink3);flex:1}
-.inp-controls{display:flex;align-items:center;gap:6px}
-.char-cnt{font-size:10px;color:var(--ink3)}
-.mic-btn{width:30px;height:30px;border:1px solid var(--c2);background:none;cursor:pointer;color:var(--c3);font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.inp-wrap{border:1px solid var(--c1);border-top:none;background:var(--ink);padding:13px 16px}
+.inp{width:100%;border:none;background:transparent;font-size:14px;font-family:var(--ss);resize:none;line-height:1.55;color:rgba(250,245,240,.9);max-height:80px;outline:none}
+.inp::placeholder{color:rgba(250,245,240,.35)}
+.inp-foot{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(250,245,240,.1)}
+.inp-hint{font-size:11px;color:rgba(250,245,240,.3);flex:1}
+.inp-controls{display:flex;align-items:center;gap:7px}
+.char-cnt{font-size:11px;color:rgba(250,245,240,.3)}
+.mic-btn{width:32px;height:32px;border:1px solid rgba(250,245,240,.2);background:none;cursor:pointer;color:rgba(250,245,240,.5);font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .15s}
 .mic-btn.on{background:var(--c3);color:#fff;border-color:var(--c3)}
-.send-btn{background:var(--ink);border:none;cursor:pointer;color:#fff;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.mic-btn.listening{animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(184,130,90,.5)}50%{box-shadow:0 0 0 5px rgba(184,130,90,0)}}
+.send-btn{background:var(--c3);border:none;cursor:pointer;color:#fff;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;transition:opacity .15s}
+.send-btn:hover{opacity:.85}
 .send-btn:disabled{opacity:.3;cursor:default}
-/* RESULTS */
-.res-wrap{max-width:500px;margin:0 auto}
-.res-hero{text-align:center;padding:32px;background:var(--c1);border:1px solid var(--c2);margin-bottom:16px}
+.err-msg{background:#fff0f0;border:1px solid #ffcccc;border-left:3px solid #e05555;padding:10px 14px;font-size:12px;color:#7a2222;display:none}
+.res-wrap{max-width:520px;margin:0 auto}
+.res-hero{text-align:center;padding:32px;background:var(--c1);border:1px solid var(--c2);margin-bottom:14px}
 .res-n{font-family:var(--sf);font-size:64px;font-weight:normal;color:var(--ink);line-height:1}
-.res-l{font-size:11px;color:var(--ink2);margin-top:7px;letter-spacing:.4px}
+.res-l{font-size:12px;color:var(--ink2);margin-top:7px;letter-spacing:.4px}
 .res-blk{border:1px solid var(--c1);padding:16px 18px;margin-bottom:10px}
-.res-blk h3{font-family:var(--sf);font-size:15px;font-weight:normal;color:var(--ink);margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--c1)}
+.res-blk h3{font-family:var(--sf);font-size:16px;font-weight:normal;color:var(--ink);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--c1)}
 .res-blk p,.res-blk li{font-size:13px;color:var(--ink2);line-height:1.75}
-.res-blk ul{padding-left:14px}.res-blk li{margin-bottom:4px}
-.cmp-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
-.cmp-l{font-size:11px;color:var(--ink2);width:155px;flex-shrink:0}
-.cmp-b{flex:1;background:var(--c1);height:4px;overflow:hidden}
-.cmp-f{background:var(--c3);height:100%}
-.cmp-n{font-family:var(--sf);font-size:13px;color:var(--ink);width:18px;text-align:right}
+.res-blk ul{padding-left:16px}.res-blk li{margin-bottom:5px}
+.cmp-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.cmp-l{font-size:12px;color:var(--ink2);width:160px;flex-shrink:0}
+.cmp-b{flex:1;background:var(--c1);height:5px;overflow:hidden}
+.cmp-f{background:var(--c3);height:100%;transition:width .6s ease}
+.cmp-n{font-family:var(--sf);font-size:14px;color:var(--ink);width:18px;text-align:right}
 .res-acts{display:flex;gap:10px;justify-content:center;margin-top:22px}
-.btn-o{background:none;border:1px solid var(--ink);color:var(--ink);padding:10px 24px;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ss);transition:all .16s}
+.btn-o{background:none;border:1px solid var(--ink);color:var(--ink);padding:11px 26px;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ss);transition:all .16s}
 .btn-o:hover{background:var(--ink);color:var(--c0)}
-.btn-g{background:none;border:1px solid var(--c2);color:var(--ink2);padding:10px 24px;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ss)}
+.btn-g{background:none;border:1px solid var(--c2);color:var(--ink2);padding:11px 26px;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ss)}
 .btn-g:hover{border-color:var(--c3);color:var(--ink)}
-.res-loader{font-size:13px;color:var(--ink2);padding:40px;text-align:center}
-/* PROFILE */
+.res-loader{font-size:14px;color:var(--ink2);padding:48px;text-align:center}
 .st-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--c1);border:1px solid var(--c1);margin-bottom:28px}
-.st-box{background:var(--c0);padding:20px;text-align:center}
-.st-n{font-family:var(--sf);font-size:34px;font-weight:normal;color:var(--ink)}
-.st-l{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink2);margin-top:5px}
-.hi{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--c1)}
-.hi-sc{width:36px;height:36px;border:1px solid var(--c2);display:flex;align-items:center;justify-content:center;font-family:var(--sf);font-size:14px;color:var(--c4);flex-shrink:0}
-/* LOCK MODAL */
-#s-lock{display:none;position:fixed;inset:0;background:rgba(30,15,5,.75);z-index:100;align-items:center;justify-content:center}
-.lock-box{background:var(--c0);border:1px solid var(--c2);border-radius:12px;padding:36px 28px;max-width:360px;width:90%;text-align:center;margin:16px}
-.lock-icon{font-size:40px;margin-bottom:12px}
-.lock-title{font-family:var(--sf);font-size:22px;font-weight:normal;color:var(--ink);margin-bottom:10px}
+.st-box{background:var(--c0);padding:22px;text-align:center}
+.st-n{font-family:var(--sf);font-size:36px;font-weight:normal;color:var(--ink)}
+.st-l{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink2);margin-top:5px}
+.hi{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--c1)}
+.hi-sc{width:40px;height:40px;border:1px solid var(--c2);display:flex;align-items:center;justify-content:center;font-family:var(--sf);font-size:15px;color:var(--c4);flex-shrink:0}
+#s-lock{display:none;position:fixed;inset:0;background:rgba(30,15,5,.8);z-index:100;align-items:center;justify-content:center}
+.lock-box{background:var(--c0);border:1px solid var(--c2);border-radius:12px;padding:40px 32px;max-width:380px;width:90%;text-align:center;margin:16px}
+.lock-icon{font-size:40px;margin-bottom:14px}
+.lock-title{font-family:var(--sf);font-size:24px;font-weight:normal;color:var(--ink);margin-bottom:10px}
+.lock-price{font-size:28px;font-family:var(--sf);color:var(--c3);margin-bottom:6px}
+.lock-price-sub{font-size:12px;color:var(--ink3);margin-bottom:18px}
 .lock-text{font-size:13px;color:var(--ink2);line-height:1.75;margin-bottom:22px}
-.lock-btn{display:block;background:var(--ink);color:#fff;padding:12px 24px;font-size:10px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;margin-bottom:10px;transition:opacity .15s}
-.lock-btn:hover{opacity:.8}
-.lock-close{background:none;border:none;font-size:12px;color:var(--ink3);cursor:pointer;font-family:var(--ss);letter-spacing:.5px}
+.lock-btn{display:block;background:var(--ink);color:#fff;padding:13px 24px;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;margin-bottom:10px;transition:opacity .15s;cursor:pointer;border:none;width:100%;font-family:var(--ss)}
+.lock-btn:hover{opacity:.85}
+.lock-close{background:none;border:none;font-size:12px;color:var(--ink3);cursor:pointer;font-family:var(--ss);margin-top:4px}
+@media(max-width:600px){
+  .grid{grid-template-columns:1fr}
+  .hdr{padding:0 16px;height:56px}
+  .screen{padding:24px 16px}
+  .nb{padding:6px 10px;font-size:10px}
+  .hero h1{font-size:26px}
+  .res-acts{flex-direction:column;align-items:center}
+}
 </style>
 </head>
 <body>
 
-<!-- LOCK MODAL -->
 <div id="s-lock" onclick="this.style.display='none'">
   <div class="lock-box" onclick="event.stopPropagation()">
     <div class="lock-icon">🔒</div>
     <div class="lock-title">Полный доступ</div>
-    <div class="lock-text">Этот сценарий доступен в платной версии.<br>Напишите боту — расскажу об условиях и тарифах.</div>
-    <a href="https://t.me/HRKtrainerBot" target="_blank" class="lock-btn">Написать @HRKtrainerBot</a>
+    <div class="lock-price">990 ₽</div>
+    <div class="lock-price-sub">в месяц · все 36 сценариев</div>
+    <div class="lock-text">Разбор от эксперта-HRD Кристины Плетнёвой.<br>История сессий. Рост компетенций.</div>
+    <a href="https://t.me/HRKtrainerBot" target="_blank" class="lock-btn">Получить доступ → @HRKtrainerBot</a>
     <button class="lock-close" onclick="document.getElementById('s-lock').style.display='none'">Закрыть</button>
   </div>
 </div>
 
 <header class="hdr">
-  <div class="brand">
+  <div class="brand" onclick="go('home')">
     <div class="b-hrk">HRK</div>
     <div class="b-line"></div>
     <div class="b-name">Kristina Pletneva</div>
@@ -149,7 +161,6 @@ body{font-family:var(--ss);background:var(--c0);color:var(--ink);min-height:100v
   </nav>
 </header>
 
-<!-- HOME -->
 <div class="screen on" id="s-home">
   <div class="hero">
     <div class="hero-deco">HRK</div>
@@ -158,7 +169,7 @@ body{font-family:var(--ss);background:var(--c0);color:var(--ink);min-height:100v
     <p>Отрабатывайте управленческие диалоги с ИИ-персонажами. Разбор от эксперта-HRD. Рост компетенций — в безопасной среде.</p>
     <button class="btn-main" onclick="go('scenarios')">Выбрать сценарий</button>
   </div>
-  <div class="stats" style="margin-bottom:44px">
+  <div class="stats">
     <div class="stat"><div class="stat-n">36</div><div class="stat-l">Сценариев</div></div>
     <div class="stat"><div class="stat-n">5</div><div class="stat-l">Бесплатно</div></div>
     <div class="stat"><div class="stat-n">6</div><div class="stat-l">Компетенций</div></div>
@@ -167,28 +178,31 @@ body{font-family:var(--ss);background:var(--c0);color:var(--ink);min-height:100v
   <div class="grid" id="home-grid"></div>
 </div>
 
-<!-- SCENARIOS -->
 <div class="screen" id="s-scenarios">
-  <div class="sec"><span class="sec-t">Все сценарии</span><span style="font-size:11px;color:var(--ink3)" id="sc-count"></span></div>
+  <div class="sec"><span class="sec-t">Все сценарии</span><span style="font-size:12px;color:var(--ink3)" id="sc-count"></span></div>
   <div class="cats" id="cats"></div>
   <div class="grid" id="full-grid"></div>
 </div>
 
-<!-- CHAT -->
 <div class="screen" id="s-chat">
   <div class="chat-hdr">
-    <div><div class="ch-eye">Сценарий</div><div class="ch-title" id="cb-title">—</div><div class="ch-char" id="cb-char">—</div></div>
+    <div>
+      <div class="ch-eye">Сценарий</div>
+      <div class="ch-title" id="cb-title">—</div>
+      <div class="ch-char" id="cb-char">—</div>
+    </div>
     <button class="end-btn" onclick="endChat()">Получить разбор</button>
   </div>
-  <div class="coach-card" id="coach-card">
+  <div class="coach-card">
     <div class="coach-label">🎯 Тренер HRK — Кристина Плетнева</div>
     <div id="coach-text">—</div>
   </div>
+  <div class="err-msg" id="err-msg"></div>
   <div class="msgs" id="msgs"></div>
   <div class="inp-wrap">
     <textarea class="inp" id="inp" rows="2" placeholder="Ваш ответ как руководитель..." onkeydown="onKey(event)" oninput="onInp()"></textarea>
     <div class="inp-foot">
-      <span class="inp-hint">Чем короче и точнее — тем выше балл. Лимит 500 символов.</span>
+      <span class="inp-hint" id="inp-hint">Чем короче и точнее — тем выше балл. Лимит 500 символов.</span>
       <div class="inp-controls">
         <span class="char-cnt" id="char-cnt">0 / 500</span>
         <button class="mic-btn" id="mic-btn" onclick="toggleMic()" title="Голосовой ввод">🎤</button>
@@ -198,14 +212,12 @@ body{font-family:var(--ss);background:var(--c0);color:var(--ink);min-height:100v
   </div>
 </div>
 
-<!-- RESULTS -->
 <div class="screen" id="s-results">
   <div class="res-wrap" id="res-wrap">
     <div class="res-loader"><div class="dots" style="justify-content:center"><span></span><span></span><span></span></div><br>Кристина анализирует ваш разговор...</div>
   </div>
 </div>
 
-<!-- PROFILE -->
 <div class="screen" id="s-profile">
   <div class="sec"><span class="sec-t">Мой прогресс</span></div>
   <div class="st-row">
@@ -213,121 +225,164 @@ body{font-family:var(--ss);background:var(--c0);color:var(--ink);min-height:100v
     <div class="st-box"><div class="st-n" id="p-a">—</div><div class="st-l">Средний балл</div></div>
     <div class="st-box"><div class="st-n" id="p-b">—</div><div class="st-l">Лучший результат</div></div>
   </div>
-  <div class="sec" style="margin-bottom:12px"><span class="sec-t" style="font-size:18px">История</span></div>
+  <div class="sec" style="margin-bottom:14px"><span class="sec-t" style="font-size:18px">История</span></div>
   <div id="hist"></div>
 </div>
 
 <script>
-// 5 БЕСПЛАТНЫХ сценариев по ID
-const FREE=[1,4,15,7,9];
-
+const FREE=new Set([1,4,15,7,9]);
 const SC=[
-{id:1,title:"«Я ухожу» — разговор об удержании",cat:"Удержание",diff:"Средний",time:"15–20 мин",desc:"Ключевой сотрудник получил оффер. У вас один шанс.",char:"Алексей · ведущий разработчик, 5 лет",action:"Входит спокойно, но решительно.",hint:"(Оффер хороший. Посмотрю что скажут здесь.)",open:"Я хотел поговорить лично. Получил предложение от другой компании.",coach:"Слушайте сначала — не торопитесь с деньгами. Найдите истинную причину ухода. Используйте технику «Слушай дольше, чем хочется».",sys:`Ты Алексей — ведущий разработчик, 5 лет в компании. Получил оффер +30%. Устал от монотонности. Истинные мотивы: скука, нет роста. Если руководитель слушает — смягчаешься. Давит деньгами — закрываешься. 2–4 предложения.`},
-
-{id:4,title:"Постановка амбициозной задачи",cat:"Делегирование",diff:"Средний",time:"15 мин",desc:"Нужно вдохновить сотрудника на стратегический проект, в который он не верит.",char:"Андрей Волков · ведущий специалист / тимлид",action:"Входит в кабинет, слегка напряжён.",hint:"(Жду аргументов: моя экспертиза vs риски. И что я с этого получу.)",open:"«Три месяца, новый продукт, команда с нуля... Это выглядит безумно. А если не получится? И почему вообще я?»",coach:"Задача — вдохновить Андрея, используя технику «Вызов». Покажите почему именно он, раскройте видение и выразите веру в него. После каждого шага — фидбэк.",sys:`Ты Андрей — ведущий специалист. Получил амбициозное задание. Надёжный, но не уверен в своих силах для такого масштаба. Сначала сомневаешься. Если руководитель объясняет почему ты — начинаешь загораться. Давит авторитетом — сопротивляешься.`},
-
-{id:7,title:"Провал плана без потери мотивации",cat:"Обратная связь",diff:"Средний",time:"15 мин",desc:"Сотрудник не выполнил KPI. Нужна честная ОС без разрушения мотивации.",char:"Игорь · аккаунт-менеджер, 2 года",action:"Входит, слегка напряжён.",hint:"(Знаю что провалился. Боюсь только обвинений.)",open:"Здравствуйте. Понимаю, зачем вы меня вызвали...",coach:"Факты → влияние → ожидания → план. Дайте высказаться первым. Фокус на будущем, не на разборе полётов.",sys:`Ты Игорь — аккаунт-менеджер. Провалил план на 40%. Сначала оправдываешься. Если руководитель слушает — постепенно честнее. Давление — закрываешься. На конкретный план — реагируешь позитивно.`},
-
-{id:15,title:"Gen Z: «Мне скучно»",cat:"Мотивация",diff:"Лёгкий",time:"10 мин",desc:"24-летний аналитик теряет интерес. Удержать без повышения зарплаты.",char:"Дима · аналитик данных, 1 год",action:"Сидит с ноутбуком. Немного рассеян.",hint:"(Хочу чего-то настоящего. Не знаю, есть ли оно здесь.)",open:"Привет. Есть кое-что на душе.",coach:"Не читайте лекцию. Узнайте его мечту первым. Предложите конкретный проект — он не терпит шаблонов про «рост через 3 года».",sys:`Ты Дима, 24 года, аналитик. Хочешь ИИ, продукт, влияние. Ненавидишь корпоративный язык. «Рост через 3 года» — неинтересно. Конкретное предложение — заряжаешься.`},
-
-{id:9,title:"Финальный разговор: увольнение",cat:"Сложные разговоры",diff:"Сложный",time:"20 мин",desc:"Вы приняли решение. Разговор должен быть честным, человечным и достойным.",char:"Светлана · бухгалтер, 7 лет в компании",action:"Входит. Не подозревает о теме разговора.",hint:"(Что-то в атмосфере не так. Боюсь.)",open:"Здравствуйте. Вы хотели поговорить...",coach:"Прямо с первых секунд. Не оправдывайтесь. Дайте высказаться. Уважительный тон — обязателен.",sys:`Ты Светлана, бухгалтер. 7 лет, лояльна. Автоматизация — должность избыточна. Фазы: шок → обида → практические вопросы. Уважительный разговор — постепенное принятие.`},
-
-// ЗАБЛОКИРОВАННЫЕ
-{id:10,title:"Ультиматум: повышение или уход",cat:"Удержание",diff:"Сложный",time:"15 мин",desc:"Лучший продавец выдвинул ультиматум. Вакансии нет. Бюджета нет.",char:"Марина · менеджер по продажам",action:"",hint:"",open:"",coach:"",sys:""},
-{id:11,title:"Работа с «незаменимым» сотрудником",cat:"Удержание",diff:"Сложный",time:"15 мин",desc:"Сотрудник знает что незаменим и пользуется этим. Нужно изменить баланс.",char:"Константин · архитектор системы",action:"",hint:"",open:"",coach:"",sys:""},
-{id:12,title:"Задача сотруднику без инициативы",cat:"Делегирование",diff:"Средний",time:"15 мин",desc:"Пассивный исполнитель. Нужно передать ответственность, а не просто поручить.",char:"Михаил · специалист",action:"",hint:"",open:"",coach:"",sys:""},
-{id:13,title:"Делегирование с высокой ответственностью",cat:"Делегирование",diff:"Сложный",time:"20 мин",desc:"Передача ключевого клиента сильному, но сомневающемуся сотруднику.",char:"Сергей · senior-специалист",action:"",hint:"",open:"",coach:"",sys:""},
-{id:14,title:"Делегирование «своей» задачи",cat:"Делегирование",diff:"Средний",time:"15 мин",desc:"Передача задачи которую руководитель всегда делал сам.",char:"Ольга · специалист",action:"",hint:"",open:"",coach:"",sys:""},
-{id:16,title:"Ежемесячный one-to-one",cat:"Обратная связь",diff:"Лёгкий",time:"15 мин",desc:"Плановая встреча по итогам месяца: 70% плана, есть провалы и успехи.",char:"Екатерина · менеджер по маркетингу",action:"",hint:"",open:"",coach:"",sys:""},
-{id:17,title:"Похвала за выполненную задачу",cat:"Обратная связь",diff:"Лёгкий",time:"10 мин",desc:"Сотрудник блестяще выполнил сложный проект. Похвалить правильно.",char:"Елена · специалист",action:"",hint:"",open:"",coach:"",sys:""},
-{id:18,title:"Несоответствие должности",cat:"Обратная связь",diff:"Сложный",time:"20 мин",desc:"Сотрудник не справляется с требованиями позиции. Честный разговор.",char:"Константин · специалист",action:"",hint:"",open:"",coach:"",sys:""},
-{id:19,title:"Итоги испытательного срока",cat:"Обратная связь",diff:"Средний",time:"15 мин",desc:"Результаты неоднозначные. Принять решение с чёткими условиями.",char:"Мария · специалист (испытательный срок)",action:"",hint:"",open:"",coach:"",sys:""},
-{id:20,title:"Обратная связь от подчинённого",cat:"Обратная связь",diff:"Сложный",time:"15 мин",desc:"Подчинённый критикует ваш стиль управления. Принять критику снизу.",char:"Екатерина · специалист",action:"",hint:"",open:"",coach:"",sys:""},
-{id:21,title:"Выговор за срыв сроков",cat:"Дисциплина",diff:"Средний",time:"15 мин",desc:"Дедлайн сорван без предупреждения. Чёткий разговор с последствиями.",char:"Дмитрий · менеджер проектов",action:"",hint:"",open:"",coach:"",sys:""},
-{id:22,title:"Систематические опоздания",cat:"Дисциплина",diff:"Лёгкий",time:"10 мин",desc:"Сотрудник опаздывает каждый день. Коллеги начинают замечать.",char:"Иван · специалист",action:"",hint:"",open:"",coach:"",sys:""},
-{id:23,title:"Нарушение дисциплины",cat:"Дисциплина",diff:"Средний",time:"15 мин",desc:"Третий случай за месяц. Паттерн, а не случайность.",char:"Максим · специалист",action:"",hint:"",open:"",coach:"",sys:""},
-{id:24,title:"Прогул сотрудника",cat:"Дисциплина",diff:"Средний",time:"10 мин",desc:"Не вышел без предупреждения. Первый случай.",char:"Денис · специалист",action:"",hint:"",open:"",coach:"",sys:""},
-{id:25,title:"Уставший профессионал",cat:"Мотивация",diff:"Средний",time:"15 мин",desc:"Опытный сотрудник потерял интерес и делает всё на автопилоте.",char:"Алексей · ведущий специалист",action:"",hint:"",open:"",coach:"",sys:""},
-{id:26,title:"Хронический нытик",cat:"Мотивация",diff:"Сложный",time:"15 мин",desc:"Сотрудник постоянно жалуется и отравляет атмосферу в команде.",char:"Виктор · специалист",action:"",hint:"",open:"",coach:"",sys:""},
-{id:27,title:"Выгорание ключевого сотрудника",cat:"Мотивация",diff:"Средний",time:"15 мин",desc:"Ценный PM делает ошибки и избегает контакта.",char:"Катя · проджект-менеджер",action:"",hint:"",open:"",coach:"",sys:""},
-{id:28,title:"Внутренне уволился",cat:"Мотивация",diff:"Сложный",time:"20 мин",desc:"Сотрудник потерял всякий интерес и просто отбывает.",char:"Андрей · специалист",action:"",hint:"",open:"",coach:"",sys:""},
-{id:29,title:"«Почему не я?» — отказ в повышении",cat:"Карьера",diff:"Средний",time:"15 мин",desc:"Сотрудник узнал что повысили другого. Обижен и хочет объяснений.",char:"Роман · тимлид",action:"",hint:"",open:"",coach:"",sys:""},
-{id:30,title:"Повышение в должности",cat:"Карьера",diff:"Лёгкий",time:"15 мин",desc:"Объявить о повышении и правильно подготовить к новой роли.",char:"Михаил · специалист",action:"",hint:"",open:"",coach:"",sys:""},
-{id:31,title:"Профессиональное развитие",cat:"Карьера",diff:"Лёгкий",time:"15 мин",desc:"Сотрудник хочет понять свой карьерный путь. Ждёт конкретики.",char:"Артём · специалист",action:"",hint:"",open:"",coach:"",sys:""},
-{id:32,title:"Депремирование",cat:"Сложные разговоры",diff:"Сложный",time:"15 мин",desc:"Нужно сообщить что премии не будет. Он ждёт её уже 2 месяца.",char:"Сергей · специалист",action:"",hint:"",open:"",coach:"",sys:""},
-{id:33,title:"Разговор об этическом нарушении",cat:"Сложные разговоры",diff:"Сложный",time:"20 мин",desc:"Сотрудника заподозрили в конфликте интересов.",char:"Денис · закупщик",action:"",hint:"",open:"",coach:"",sys:""},
-{id:34,title:"Открытый конфликт с подчинённым",cat:"Сложные разговоры",diff:"Сложный",time:"20 мин",desc:"Подчинённый публично оспорил решение на совещании.",char:"Андрей · специалист",action:"",hint:"",open:"",coach:"",sys:""},
-{id:35,title:"Интервью с сильным кандидатом",cat:"Найм",diff:"Средний",time:"15 мин",desc:"Кандидат с тремя офферами. Продайте компанию честно.",char:"Анна · HRD, 10 лет опыта",action:"",hint:"",open:"",coach:"",sys:""},
-{id:36,title:"Финальный оффер: переговоры о зарплате",cat:"Найм",diff:"Средний",time:"10 мин",desc:"Кандидат просит на 40% больше бюджета.",char:"Артём · старший разработчик",action:"",hint:"",open:"",coach:"",sys:""},
-{id:37,title:"Конфликт двух сотрудников",cat:"Конфликты",diff:"Сложный",time:"20 мин",desc:"Два ключевых специалиста открыто конфликтуют. Команда разделилась.",char:"Алина · тимлид дизайна",action:"",hint:"",open:"",coach:"",sys:""},
-{id:38,title:"Токсичный топ: поставить границы",cat:"Конфликты",diff:"Сложный",time:"20 мин",desc:"Лучший продавец разрушает команду. Как поставить границы?",char:"Виктор · менеджер по продажам",action:"",hint:"",open:"",coach:"",sys:""},
-{id:39,title:"Пассивный агрессор",cat:"Конфликты",diff:"Сложный",time:"15 мин",desc:"Сотрудник говорит «да» но саботирует работу.",char:"Максим · специалист",action:"",hint:"",open:"",coach:"",sys:""},
+{id:1,title:"«Я ухожу» — разговор об удержании",cat:"Удержание",diff:"Средний",time:"15–20 мин",desc:"Ключевой сотрудник получил оффер. У вас один шанс.",charFull:"Алексей · ведущий разработчик, 5 лет",charShort:"Алексей",action:"Входит спокойно, но решительно.",hint:"(Оффер хороший. Посмотрю что скажут здесь.)",open:"Я хотел поговорить лично. Получил предложение от другой компании.",coach:"Слушайте сначала — не торопитесь с деньгами. Найдите истинную причину ухода. Используйте технику «Слушай дольше, чем хочется».",sys:`Ты Алексей — ведущий разработчик, 5 лет в компании. Получил оффер +30%. Устал от монотонности. Истинные мотивы: скука, нет роста. Если руководитель слушает — смягчаешься. Если давит деньгами — закрываешься. Отвечай 2–4 предложения, живо и по-человечески, только на русском.`},
+{id:4,title:"Постановка амбициозной задачи",cat:"Делегирование",diff:"Средний",time:"15 мин",desc:"Нужно вдохновить сотрудника на стратегический проект, в который он не верит.",charFull:"Андрей Волков · ведущий специалист / тимлид",charShort:"Андрей",action:"Входит в кабинет, слегка напряжён.",hint:"(Жду аргументов: моя экспертиза vs риски. И что я с этого получу.)",open:"Три месяца, новый продукт, команда с нуля... Это выглядит безумно. А если не получится? И почему вообще я?",coach:"Задача — вдохновить Андрея, используя технику «Вызов». Покажите почему именно он, раскройте видение и выразите веру в него.",sys:`Ты Андрей — ведущий специалист. Получил амбициозное задание. Надёжный, но не уверен в силах. Сначала сомневаешься. Если объясняют почему ты — начинаешь загораться. Давит авторитетом — сопротивляешься. Отвечай 2–4 предложения, только на русском.`},
+{id:7,title:"Провал плана без потери мотивации",cat:"Обратная связь",diff:"Средний",time:"15 мин",desc:"Сотрудник не выполнил KPI. Нужна честная ОС без разрушения мотивации.",charFull:"Игорь · аккаунт-менеджер, 2 года",charShort:"Игорь",action:"Входит, слегка напряжён.",hint:"(Знаю что провалился. Боюсь только обвинений.)",open:"Здравствуйте. Понимаю, зачем вы меня вызвали...",coach:"Факты → влияние → ожидания → план. Дайте высказаться первым. Фокус на будущем, не на разборе полётов.",sys:`Ты Игорь — аккаунт-менеджер. Провалил план на 40%. Сначала оправдываешься. Если слушают — постепенно честнее. На конкретный план — реагируешь позитивно. Отвечай 2–4 предложения, только на русском.`},
+{id:15,title:"Gen Z: «Мне скучно»",cat:"Мотивация",diff:"Лёгкий",time:"10 мин",desc:"24-летний аналитик теряет интерес. Удержать без повышения зарплаты.",charFull:"Дима · аналитик данных, 1 год",charShort:"Дима",action:"Сидит с ноутбуком. Немного рассеян.",hint:"(Хочу чего-то настоящего. Не знаю, есть ли оно здесь.)",open:"Привет. Есть кое-что на душе.",coach:"Не читайте лекцию. Узнайте его мечту первым. Предложите конкретный проект — он не терпит шаблонов про «рост через 3 года».",sys:`Ты Дима, 24 года, аналитик. Хочешь ИИ, продукт, влияние. Ненавидишь корпоративный язык. Конкретное предложение — заряжаешься. Отвечай 2–4 предложения, только на русском.`},
+{id:9,title:"Финальный разговор: увольнение",cat:"Сложные разговоры",diff:"Сложный",time:"20 мин",desc:"Вы приняли решение. Разговор должен быть честным, человечным и достойным.",charFull:"Светлана · бухгалтер, 7 лет в компании",charShort:"Светлана",action:"Входит. Не подозревает о теме разговора.",hint:"(Что-то в атмосфере не так. Боюсь.)",open:"Здравствуйте. Вы хотели поговорить...",coach:"Прямо с первых секунд. Не оправдывайтесь. Дайте высказаться. Уважительный тон — обязателен.",sys:`Ты Светлана, бухгалтер, 7 лет. Лояльна. Фазы: шок → обида → практические вопросы. Уважительный разговор — постепенное принятие. Отвечай 2–4 предложения, только на русском.`},
+{id:10,title:"Ультиматум: повышение или уход",cat:"Удержание",diff:"Сложный",time:"15 мин",desc:"Лучший продавец выдвинул ультиматум. Вакансии нет. Бюджета нет.",charFull:"Марина · менеджер по продажам",charShort:"Марина",action:"",hint:"",open:"",coach:"",sys:""},
+{id:11,title:"Работа с «незаменимым» сотрудником",cat:"Удержание",diff:"Сложный",time:"15 мин",desc:"Сотрудник знает что незаменим и пользуется этим.",charFull:"Константин · архитектор системы",charShort:"Константин",action:"",hint:"",open:"",coach:"",sys:""},
+{id:12,title:"Задача сотруднику без инициативы",cat:"Делегирование",diff:"Средний",time:"15 мин",desc:"Пассивный исполнитель. Нужно передать ответственность.",charFull:"Михаил · специалист",charShort:"Михаил",action:"",hint:"",open:"",coach:"",sys:""},
+{id:13,title:"Делегирование с высокой ответственностью",cat:"Делегирование",diff:"Сложный",time:"20 мин",desc:"Передача ключевого клиента сильному, но сомневающемуся сотруднику.",charFull:"Сергей · senior-специалист",charShort:"Сергей",action:"",hint:"",open:"",coach:"",sys:""},
+{id:14,title:"Делегирование «своей» задачи",cat:"Делегирование",diff:"Средний",time:"15 мин",desc:"Передача задачи которую руководитель всегда делал сам.",charFull:"Ольга · специалист",charShort:"Ольга",action:"",hint:"",open:"",coach:"",sys:""},
+{id:16,title:"Ежемесячный one-to-one",cat:"Обратная связь",diff:"Лёгкий",time:"15 мин",desc:"Плановая встреча по итогам месяца.",charFull:"Екатерина · менеджер по маркетингу",charShort:"Екатерина",action:"",hint:"",open:"",coach:"",sys:""},
+{id:17,title:"Похвала за выполненную задачу",cat:"Обратная связь",diff:"Лёгкий",time:"10 мин",desc:"Сотрудник блестяще выполнил сложный проект.",charFull:"Елена · специалист",charShort:"Елена",action:"",hint:"",open:"",coach:"",sys:""},
+{id:18,title:"Несоответствие должности",cat:"Обратная связь",diff:"Сложный",time:"20 мин",desc:"Сотрудник не справляется с требованиями позиции.",charFull:"Константин · специалист",charShort:"Константин",action:"",hint:"",open:"",coach:"",sys:""},
+{id:19,title:"Итоги испытательного срока",cat:"Обратная связь",diff:"Средний",time:"15 мин",desc:"Результаты неоднозначные. Принять решение с чёткими условиями.",charFull:"Мария · специалист (испытательный срок)",charShort:"Мария",action:"",hint:"",open:"",coach:"",sys:""},
+{id:20,title:"Обратная связь от подчинённого",cat:"Обратная связь",diff:"Сложный",time:"15 мин",desc:"Подчинённый критикует ваш стиль управления.",charFull:"Екатерина · специалист",charShort:"Екатерина",action:"",hint:"",open:"",coach:"",sys:""},
+{id:21,title:"Выговор за срыв сроков",cat:"Дисциплина",diff:"Средний",time:"15 мин",desc:"Дедлайн сорван без предупреждения.",charFull:"Дмитрий · менеджер проектов",charShort:"Дмитрий",action:"",hint:"",open:"",coach:"",sys:""},
+{id:22,title:"Систематические опоздания",cat:"Дисциплина",diff:"Лёгкий",time:"10 мин",desc:"Сотрудник опаздывает каждый день.",charFull:"Иван · специалист",charShort:"Иван",action:"",hint:"",open:"",coach:"",sys:""},
+{id:23,title:"Нарушение дисциплины",cat:"Дисциплина",diff:"Средний",time:"15 мин",desc:"Третий случай за месяц. Паттерн, а не случайность.",charFull:"Максим · специалист",charShort:"Максим",action:"",hint:"",open:"",coach:"",sys:""},
+{id:24,title:"Прогул сотрудника",cat:"Дисциплина",diff:"Средний",time:"10 мин",desc:"Не вышел без предупреждения. Первый случай.",charFull:"Денис · специалист",charShort:"Денис",action:"",hint:"",open:"",coach:"",sys:""},
+{id:25,title:"Уставший профессионал",cat:"Мотивация",diff:"Средний",time:"15 мин",desc:"Опытный сотрудник потерял интерес и делает всё на автопилоте.",charFull:"Алексей · ведущий специалист",charShort:"Алексей",action:"",hint:"",open:"",coach:"",sys:""},
+{id:26,title:"Хронический нытик",cat:"Мотивация",diff:"Сложный",time:"15 мин",desc:"Сотрудник постоянно жалуется и отравляет атмосферу.",charFull:"Виктор · специалист",charShort:"Виктор",action:"",hint:"",open:"",coach:"",sys:""},
+{id:27,title:"Выгорание ключевого сотрудника",cat:"Мотивация",diff:"Средний",time:"15 мин",desc:"Ценный PM делает ошибки и избегает контакта.",charFull:"Катя · проджект-менеджер",charShort:"Катя",action:"",hint:"",open:"",coach:"",sys:""},
+{id:28,title:"Внутренне уволился",cat:"Мотивация",diff:"Сложный",time:"20 мин",desc:"Сотрудник потерял всякий интерес и просто отбывает.",charFull:"Андрей · специалист",charShort:"Андрей",action:"",hint:"",open:"",coach:"",sys:""},
+{id:29,title:"«Почему не я?» — отказ в повышении",cat:"Карьера",diff:"Средний",time:"15 мин",desc:"Сотрудник узнал что повысили другого. Обижен и хочет объяснений.",charFull:"Роман · тимлид",charShort:"Роман",action:"",hint:"",open:"",coach:"",sys:""},
+{id:30,title:"Повышение в должности",cat:"Карьера",diff:"Лёгкий",time:"15 мин",desc:"Объявить о повышении и правильно подготовить к новой роли.",charFull:"Михаил · специалист",charShort:"Михаил",action:"",hint:"",open:"",coach:"",sys:""},
+{id:31,title:"Профессиональное развитие",cat:"Карьера",diff:"Лёгкий",time:"15 мин",desc:"Сотрудник хочет понять свой карьерный путь. Ждёт конкретики.",charFull:"Артём · специалист",charShort:"Артём",action:"",hint:"",open:"",coach:"",sys:""},
+{id:32,title:"Депремирование",cat:"Сложные разговоры",diff:"Сложный",time:"15 мин",desc:"Нужно сообщить что премии не будет. Он ждёт её уже 2 месяца.",charFull:"Сергей · специалист",charShort:"Сергей",action:"",hint:"",open:"",coach:"",sys:""},
+{id:33,title:"Разговор об этическом нарушении",cat:"Сложные разговоры",diff:"Сложный",time:"20 мин",desc:"Сотрудника заподозрили в конфликте интересов.",charFull:"Денис · закупщик",charShort:"Денис",action:"",hint:"",open:"",coach:"",sys:""},
+{id:34,title:"Открытый конфликт с подчинённым",cat:"Сложные разговоры",diff:"Сложный",time:"20 мин",desc:"Подчинённый публично оспорил решение на совещании.",charFull:"Андрей · специалист",charShort:"Андрей",action:"",hint:"",open:"",coach:"",sys:""},
+{id:35,title:"Интервью с сильным кандидатом",cat:"Найм",diff:"Средний",time:"15 мин",desc:"Кандидат с тремя офферами. Продайте компанию честно.",charFull:"Анна · HRD, 10 лет опыта",charShort:"Анна",action:"",hint:"",open:"",coach:"",sys:""},
+{id:36,title:"Финальный оффер: переговоры о зарплате",cat:"Найм",diff:"Средний",time:"10 мин",desc:"Кандидат просит на 40% больше бюджета.",charFull:"Артём · старший разработчик",charShort:"Артём",action:"",hint:"",open:"",coach:"",sys:""},
+{id:37,title:"Конфликт двух сотрудников",cat:"Конфликты",diff:"Сложный",time:"20 мин",desc:"Два ключевых специалиста открыто конфликтуют. Команда разделилась.",charFull:"Алина · тимлид дизайна",charShort:"Алина",action:"",hint:"",open:"",coach:"",sys:""},
+{id:38,title:"Токсичный топ: поставить границы",cat:"Конфликты",diff:"Сложный",time:"20 мин",desc:"Лучший продавец разрушает команду. Как поставить границы?",charFull:"Виктор · менеджер по продажам",charShort:"Виктор",action:"",hint:"",open:"",coach:"",sys:""},
+{id:39,title:"Пассивный агрессор",cat:"Конфликты",diff:"Сложный",time:"15 мин",desc:"Сотрудник говорит «да» но саботирует работу.",charFull:"Максим · специалист",charShort:"Максим",action:"",hint:"",open:"",coach:"",sys:""},
 ];
 
-const FREE_SET=new Set(FREE);
-let cur=null,hist=[],cnt=0,sess=[];
-try{sess=JSON.parse(localStorage.getItem('hrk_v5')||'[]')}catch(e){}
+let cur=null,hist=[],sess=[];
+try{sess=JSON.parse(localStorage.getItem('hrk_v7')||'[]');}catch(e){}
 
 // VOICE
 let recog=null,micOn=false;
-(function(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){const b=document.getElementById('mic-btn');if(b)b.style.display='none';return;}recog=new SR();recog.lang='ru-RU';recog.continuous=false;recog.interimResults=false;recog.onresult=e=>{const t=e.results[0][0].transcript;const i=document.getElementById('inp');i.value=(i.value+' '+t).trim();onInp();stopMic();};recog.onerror=recog.onend=()=>stopMic();})();
-function toggleMic(){micOn?stopMic():startMic();}
-function startMic(){if(!recog)return;try{recog.start();micOn=true;document.getElementById('mic-btn').classList.add('on');}catch(e){}}
-function stopMic(){if(!recog)return;try{recog.stop();}catch(e){}micOn=false;document.getElementById('mic-btn').classList.remove('on');}
+function initMic(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const btn=document.getElementById('mic-btn');
+  if(!SR){if(btn)btn.style.display='none';return;}
+  recog=new SR();recog.lang='ru-RU';recog.continuous=false;recog.interimResults=false;
+  recog.onstart=()=>{micOn=true;btn.classList.add('on','listening');setHint('🎤 Говорите...');};
+  recog.onresult=e=>{const t=e.results[0][0].transcript;const inp=document.getElementById('inp');inp.value=(inp.value+' '+t).trim();onInp();stopMic();};
+  recog.onerror=e=>{stopMic();if(e.error==='not-allowed')setHint('⚠️ Разрешите доступ к микрофону');else if(e.error==='no-speech')setHint('Ничего не услышал — попробуйте ещё раз');};
+  recog.onend=()=>stopMic();
+}
+function toggleMic(){if(!recog){setHint('Голосовой ввод не поддерживается');return;}micOn?stopMic():startMic();}
+function startMic(){try{recog.start();}catch(e){try{recog.stop();}catch(e2){}setTimeout(()=>{try{recog.start();}catch(e3){}},200);}}
+function stopMic(){try{recog.stop();}catch(e){}micOn=false;const btn=document.getElementById('mic-btn');if(btn)btn.classList.remove('on','listening');setHint('Чем короче и точнее — тем выше балл. Лимит 500 символов.');}
+function setHint(t){const h=document.getElementById('inp-hint');if(h)h.textContent=t;}
 function onInp(){const v=document.getElementById('inp').value;const c=document.getElementById('char-cnt');if(c)c.textContent=v.length+' / 500';if(v.length>500)document.getElementById('inp').value=v.slice(0,500);}
 
-function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));document.getElementById('s-'+id).classList.add('on');const b=document.querySelector(`.nb[onclick="go('${id}')"]`);if(b)b.classList.add('on');if(id==='profile')renderProfile();}
+// NAV
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('s-'+id).classList.add('on');
+  const b=document.querySelector(`.nb[onclick="go('${id}')"]`);
+  if(b)b.classList.add('on');
+  if(id==='profile')renderProfile();
+  window.scrollTo(0,0);
+}
 
+// CHAT
 function startSc(sc){
-  cur=sc;hist=[];cnt=0;stopMic();
+  cur=sc;hist=[];stopMic();
   document.getElementById('cb-title').textContent=sc.title;
-  document.getElementById('cb-char').textContent='Персонаж: '+sc.char;
+  document.getElementById('cb-char').textContent='Персонаж: '+sc.charFull;
   document.getElementById('coach-text').textContent=sc.coach;
   document.getElementById('msgs').innerHTML='';
   document.getElementById('inp').value='';
   document.getElementById('char-cnt').textContent='0 / 500';
-  go('chat');
+  showErr('');go('chat');
   const d=document.getElementById('msgs');
   const el=document.createElement('div');el.className='char-msg';
-  el.innerHTML=`<div class="char-name">${sc.char}</div>${sc.action?`<div class="char-action">${sc.action}</div>`:''}${sc.open?`<div class="char-quote">${sc.open}</div>`:''}${sc.hint?`<div class="char-hint">${sc.hint}</div>`:''}`;
+  el.innerHTML=`<div class="char-name">${sc.charFull}</div>
+    ${sc.action?`<div class="char-action">${sc.action}</div>`:''}
+    ${sc.open?`<div class="char-quote">${sc.open}</div>`:''}
+    ${sc.hint?`<div class="char-hint">${sc.hint}</div>`:''}`;
   d.appendChild(el);
 }
 
 function showLock(){document.getElementById('s-lock').style.display='flex';}
+function showErr(msg){const b=document.getElementById('err-msg');if(!b)return;b.textContent=msg;b.style.display=msg?'block':'none';}
 
-function addMsg(role,text){const d=document.getElementById('msgs');const div=document.createElement('div');div.className='msg'+(role==='user'?' u':'');div.innerHTML=`<div class="ava">${role==='user'?'Вы':'ИИ'}</div><div class="bub">${text}</div>`;d.appendChild(div);d.scrollTop=d.scrollHeight;if(role==='user')cnt++;}
-function addTyping(){const d=document.getElementById('msgs');const el=document.createElement('div');el.id='typ';el.className='msg';el.innerHTML=`<div class="ava">ИИ</div><div class="bub"><div class="dots"><span></span><span></span><span></span></div></div>`;d.appendChild(el);d.scrollTop=d.scrollHeight;}
+function addMsg(role,text){
+  const d=document.getElementById('msgs');
+  const div=document.createElement('div');
+  div.className='msg'+(role==='user'?' u':'');
+  // Аватарка — имя персонажа (первые 2 буквы) или "Вы"
+  const avaText=role==='user'?'Вы':(cur?cur.charShort.slice(0,2):'ИИ');
+  div.innerHTML=`<div class="ava">${avaText}</div><div class="bub">${role!=='user'&&cur?`<div class="msg-name">${cur.charShort}</div>`:''}${text}</div>`;
+  d.appendChild(div);d.scrollTop=d.scrollHeight;
+}
+
+function addTyping(){
+  const d=document.getElementById('msgs');
+  const el=document.createElement('div');el.id='typ';el.className='msg';
+  const avaText=cur?cur.charShort.slice(0,2):'ИИ';
+  el.innerHTML=`<div class="ava">${avaText}</div><div class="bub"><div class="dots"><span></span><span></span><span></span></div></div>`;
+  d.appendChild(el);d.scrollTop=d.scrollHeight;
+}
 function rmTyping(){const t=document.getElementById('typ');if(t)t.remove();}
+
+// GROQ API через Netlify прокси
+async function callClaude(messages,system,maxTokens=400){
+  const groqMessages=[{role:'system',content:system},...messages];
+  const r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({max_tokens:maxTokens,messages:groqMessages})});
+  if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error('API '+r.status+': '+(e?.error?.message||r.statusText));}
+  const data=await r.json();
+  const text=data.choices?.[0]?.message?.content;
+  if(!text)throw new Error('Пустой ответ от AI');
+  return text;
+}
 
 async function send(){
   const inp=document.getElementById('inp');const text=inp.value.trim();if(!text||!cur)return;
   inp.value='';document.getElementById('char-cnt').textContent='0 / 500';
-  document.getElementById('send-btn').disabled=true;
+  document.getElementById('send-btn').disabled=true;showErr('');
   addMsg('user',text);hist.push({role:'user',content:text});addTyping();
   try{
-    const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer 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','HTTP-Referer':'https://kristina31288.github.io/hrk-trainer/','X-Title':'HRK Trainer'},body:JSON.stringify({model:'meta-llama/llama-3.1-8b-instruct:free',max_tokens:300,messages:[{role:'system',content:cur.sys},...hist]})});
-    const d=await r.json();rmTyping();
-    const rep=d.choices?.[0]?.message?.content||'...';
-    hist.push({role:'assistant',content:rep});addMsg('ai',rep);
-  }catch(e){rmTyping();addMsg('ai','Ошибка соединения. Попробуйте ещё раз.');}
+    const sys=cur.sys+'\nОтвечай ТОЛЬКО на русском языке. 2–4 предложения, живо и по-человечески. Не выходи из роли.';
+    const reply=await callClaude(hist,sys,400);
+    rmTyping();hist.push({role:'assistant',content:reply});addMsg('ai',reply);
+  }catch(e){rmTyping();showErr('Ошибка: '+e.message);}
   document.getElementById('send-btn').disabled=false;
 }
-
 function onKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
 
+// RESULTS
 async function endChat(){
   if(hist.length<2){alert('Проведите хотя бы несколько реплик для разбора.');return;}
   stopMic();go('results');
   document.getElementById('res-wrap').innerHTML=`<div class="res-loader"><div class="dots" style="justify-content:center"><span></span><span></span><span></span></div><br>Кристина анализирует ваш разговор...</div>`;
-  const conv=hist.map(m=>`${m.role==='user'?'Руководитель':'Сотрудник'}: ${m.content}`).join('\n\n');
-  const ep=`Ты — старший HRD-эксперт Кристина Плетнева. Проанализируй управленческий диалог по сценарию "${cur.title}".\n\nДИАЛОГ:\n${conv}\n\nОтвет строго в JSON:\n{"score":<0-100>,"verdict":"<одна строка>","strengths":["<1>","<2>","<3>"],"gaps":["<1>","<2>","<3>"],"tip":"<конкретный совет>","competencies":{"Активное слушание":<0-10>,"Управление эмоциями":<0-10>,"Структура разговора":<0-10>,"Постановка вопросов":<0-10>,"Работа с сопротивлением":<0-10>,"Завершение диалога":<0-10>}}`;
+  const conv=hist.map(m=>`${m.role==='user'?'Руководитель':cur.charShort}: ${m.content}`).join('\n\n');
+  const sys=`Ты — старший HRD-эксперт Кристина Плетнева. Анализируй управленческие диалоги. Отвечай СТРОГО только валидным JSON без пояснений и markdown.`;
+  const prompt=`Проанализируй диалог по сценарию "${cur.title}".\n\nДИАЛОГ:\n${conv}\n\nВерни ТОЛЬКО JSON:\n{"score":<0-100>,"verdict":"<одна строка>","strengths":["<1>","<2>","<3>"],"gaps":["<1>","<2>","<3>"],"tip":"<конкретный совет>","competencies":{"Активное слушание":<0-10>,"Управление эмоциями":<0-10>,"Структура разговора":<0-10>,"Постановка вопросов":<0-10>,"Работа с сопротивлением":<0-10>,"Завершение диалога":<0-10>}}`;
   try{
-    const r2=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer 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','HTTP-Referer':'https://kristina31288.github.io/hrk-trainer/','X-Title':'HRK Trainer'},body:JSON.stringify({model:'meta-llama/llama-3.1-8b-instruct:free',max_tokens:1000,messages:[{role:'user',content:ep}]})});
-    const d=await r2.json();let txt=(d.choices?.[0]?.message?.content||'{}').replace(/```json|```/g,'').trim();
-    const ev=JSON.parse(txt);renderResults(ev);
+    const txt=await callClaude([{role:'user',content:prompt}],sys,1000);
+    const ev=JSON.parse(txt.replace(/```json|```/g,'').trim());
+    renderResults(ev);
     sess.push({title:cur.title,cat:cur.cat,score:ev.score,date:new Date().toLocaleDateString('ru')});
-    try{localStorage.setItem('hrk_v5',JSON.stringify(sess))}catch(e){}
-  }catch(e){document.getElementById('res-wrap').innerHTML='<div class="res-loader">Ошибка анализа. Попробуйте ещё раз.</div>';}
+    try{localStorage.setItem('hrk_v7',JSON.stringify(sess));}catch(e){}
+  }catch(e){
+    document.getElementById('res-wrap').innerHTML=`<div class="res-loader">⚠️ Ошибка анализа: ${e.message}<br><br><button class="btn-o" onclick="endChat()">Попробовать снова</button></div>`;
+  }
 }
 
 function renderResults(ev){
@@ -338,12 +393,10 @@ function renderResults(ev){
     <div class="res-blk"><h3>Точки роста</h3><ul>${(ev.gaps||[]).map(g=>`<li>${g}</li>`).join('')}</ul></div>
     <div class="res-blk"><h3>Компетенции</h3>${cr}</div>
     <div class="res-blk"><h3>Совет Кристины</h3><p>${ev.tip||''}</p></div>
-    <div class="res-acts">
-      <button class="btn-o" onclick="startSc(cur)">Ещё раз</button>
-      <button class="btn-g" onclick="go('scenarios')">Другой сценарий</button>
-    </div>`;
+    <div class="res-acts"><button class="btn-o" onclick="startSc(cur)">Ещё раз</button><button class="btn-g" onclick="go('scenarios')">Другой сценарий</button></div>`;
 }
 
+// PROFILE
 function renderProfile(){
   const t=sess.length;
   document.getElementById('p-s').textContent=t;
@@ -351,38 +404,27 @@ function renderProfile(){
   document.getElementById('p-b').textContent=t?Math.max(...sess.map(x=>x.score)):'—';
   const el=document.getElementById('hist');
   if(!t){el.innerHTML='<p style="font-size:13px;color:var(--ink2);padding:16px 0">Сессий пока нет.</p>';return;}
-  el.innerHTML=sess.slice().reverse().map(s=>`<div class="hi"><div class="hi-sc">${s.score}</div><div><div style="font-family:var(--sf);font-size:14px;color:var(--ink)">${s.title}</div><div style="font-size:10px;color:var(--ink3);margin-top:2px">${s.cat} · ${s.date}</div></div></div>`).join('');
+  el.innerHTML=sess.slice().reverse().map(s=>`<div class="hi"><div class="hi-sc">${s.score}</div><div><div style="font-family:var(--sf);font-size:15px;color:var(--ink)">${s.title}</div><div style="font-size:11px;color:var(--ink3);margin-top:2px">${s.cat} · ${s.date}</div></div></div>`).join('');
 }
 
+// CARDS
 function mkCard(sc){
-  const free=FREE_SET.has(sc.id);
+  const free=FREE.has(sc.id);
   const d=document.createElement('button');
   d.className='card'+(free?'':' locked');
   d.onclick=()=>free?startSc(sc):showLock();
-  const lockBadge=free?'<span class="cg">Начать →</span>':'<span style="font-size:9px;color:var(--c3);letter-spacing:.5px">🔒 Только в полной версии</span>';
-  d.innerHTML=`<div class="cm"><span class="pill">${sc.cat}</span><span class="diff">${sc.diff}</span>${free?'':'<span class="lock-badge">🔒</span>'}</div><h3>${sc.title}</h3><p>${sc.desc}</p><div class="cf"><span class="ct">${sc.time}</span>${lockBadge}</div>`;
+  d.innerHTML=`<div class="cm"><span class="pill">${sc.cat}</span><span class="diff">${sc.diff}</span>${free?'':'<span class="lock-badge">🔒</span>'}</div><h3>${sc.title}</h3><p>${sc.desc}</p><div class="cf"><span class="ct">${sc.time}</span>${free?'<span class="cg">Начать →</span>':'<span style="font-size:10px;color:var(--c3)">🔒 Только в платной версии</span>'}</div>`;
   return d;
 }
-
-function renderHomeGrid(){
-  const g=document.getElementById('home-grid');
-  SC.filter(s=>FREE_SET.has(s.id)).forEach(sc=>g.appendChild(mkCard(sc)));
-}
-
-function renderGrid(f='Все'){
-  const g=document.getElementById('full-grid');g.innerHTML='';
-  const list=f==='Все'?SC:SC.filter(s=>s.cat===f);
-  document.getElementById('sc-count').textContent=list.length+' сценариев';
-  list.forEach(sc=>g.appendChild(mkCard(sc)));
-}
-
+function renderHomeGrid(){const g=document.getElementById('home-grid');SC.filter(s=>FREE.has(s.id)).forEach(sc=>g.appendChild(mkCard(sc)));}
+function renderGrid(f='Все'){const g=document.getElementById('full-grid');g.innerHTML='';const list=f==='Все'?SC:SC.filter(s=>s.cat===f);document.getElementById('sc-count').textContent=list.length+' сценариев';list.forEach(sc=>g.appendChild(mkCard(sc)));}
 function renderCats(){
   const cats=['Все',...new Set(SC.map(s=>s.cat))];
   const cf=document.getElementById('cats');
   cats.forEach(c=>{const b=document.createElement('button');b.className='cb'+(c==='Все'?' on':'');b.textContent=c;b.onclick=()=>{cf.querySelectorAll('.cb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(c);};cf.appendChild(b);});
 }
 
-renderHomeGrid();renderCats();renderGrid();
+document.addEventListener('DOMContentLoaded',()=>{initMic();renderHomeGrid();renderCats();renderGrid();});
 </script>
 </body>
 </html>
