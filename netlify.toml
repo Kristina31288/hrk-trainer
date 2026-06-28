@@ -6,3 +6,8 @@
   from = "/api/ai"
   to = "/.netlify/functions/ai"
   status = 200
+
+[[redirects]]
+  from = "/api/bot"
+  to = "/.netlify/functions/bot"
+  status = 200
