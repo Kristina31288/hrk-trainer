@@ -11,3 +11,4 @@
   from = "/api/bot"
   to = "/.netlify/functions/bot"
   status = 200
+ 
