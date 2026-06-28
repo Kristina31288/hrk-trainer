@@ -18,7 +18,7 @@ async function sendMessage(chatId, text, keyboard) {
 
 const KEYBOARD = {
   inline_keyboard: [
-    [{ text: "🎯 Открыть тренажёр", web_app: { url: SITE } }],
+    [{ text: "🎯 Открыть тренажёр", url: SITE }],
     [
       { text: "📋 Сценарии", callback_data: "scenarios" },
       { text: "💳 Тарифы", callback_data: "price" }
