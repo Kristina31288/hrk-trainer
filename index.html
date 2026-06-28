@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -126,11 +127,43 @@ body{font-family:var(--ss);background:var(--c0);color:var(--ink);min-height:100v
 .lock-close{background:none;border:none;font-size:12px;color:var(--ink3);cursor:pointer;font-family:var(--ss);margin-top:4px}
 @media(max-width:600px){
   .grid{grid-template-columns:1fr}
-  .hdr{padding:0 16px;height:56px}
-  .screen{padding:24px 16px}
-  .nb{padding:6px 10px;font-size:10px}
-  .hero h1{font-size:26px}
+  .hdr{padding:0 14px;height:54px;gap:8px}
+  .b-hrk{font-size:15px;letter-spacing:5px}
+  .b-name{font-size:6px}
+  .nb{padding:5px 8px;font-size:9px;letter-spacing:.3px}
+  .screen{padding:20px 14px}
+  .hero{padding:32px 14px 28px}
+  .hero h1{font-size:24px}
+  .hero p{font-size:13px}
+  .stats{margin-bottom:28px}
+  .stat{padding:16px 10px}
+  .stat-n{font-size:26px}
+  .stat-l{font-size:11px}
+  .card{padding:14px}
+  .card h3{font-size:14px}
+  .chat-hdr{padding:11px 14px}
+  .ch-title{font-size:14px}
+  .end-btn{padding:6px 10px;font-size:9px}
+  .msgs{height:260px}
+  .bub{font-size:13px;max-width:88%}
+  .coach-card{padding:11px 13px;font-size:12px}
+  .inp-wrap{padding:10px 14px}
+  .inp{font-size:13px}
+  .inp-hint{font-size:10px}
+  .send-btn{width:36px;height:36px;font-size:18px}
+  .mic-btn{width:36px;height:36px}
   .res-acts{flex-direction:column;align-items:center}
+  .res-n{font-size:52px}
+  .cmp-l{width:130px;font-size:11px}
+  .lock-box{padding:28px 20px}
+  .cats{gap:5px}
+  .cb{padding:4px 10px;font-size:9px}
+  .sec-t{font-size:17px}
+}
+@media(max-width:380px){
+  .nb{padding:4px 6px;font-size:8px}
+  .hero h1{font-size:21px}
+  .b-hrk{font-size:13px;letter-spacing:4px}
 }
 </style>
 </head>
@@ -170,7 +203,7 @@ body{font-family:var(--ss);background:var(--c0);color:var(--ink);min-height:100v
     <button class="btn-main" onclick="go('scenarios')">Выбрать сценарий</button>
   </div>
   <div class="stats">
-    <div class="stat"><div class="stat-n">36</div><div class="stat-l">Сценариев</div></div>
+    <div class="stat"><div class="stat-n">34</div><div class="stat-l">Сценариев</div></div>
     <div class="stat"><div class="stat-n">5</div><div class="stat-l">Бесплатно</div></div>
     <div class="stat"><div class="stat-n">6</div><div class="stat-l">Компетенций</div></div>
   </div>
