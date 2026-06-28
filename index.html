@@ -82,11 +82,11 @@ body{font-family:var(--ss);background:var(--c0);color:var(--ink);min-height:100v
 .inp-hint{font-size:11px;color:rgba(250,245,240,.3);flex:1}
 .inp-controls{display:flex;align-items:center;gap:7px}
 .char-cnt{font-size:11px;color:rgba(250,245,240,.3)}
-.mic-btn{width:32px;height:32px;border:1px solid rgba(250,245,240,.2);background:none;cursor:pointer;color:rgba(250,245,240,.5);font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .15s}
-.mic-btn.on{background:var(--c3);color:#fff;border-color:var(--c3)}
-.mic-btn.listening{animation:pulse 1s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(184,130,90,.5)}50%{box-shadow:0 0 0 5px rgba(184,130,90,0)}}
-.send-btn{background:var(--c3);border:none;cursor:pointer;color:#fff;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;transition:opacity .15s}
+.mic-btn{width:44px;height:44px;border:none;background:rgba(250,245,240,.15);cursor:pointer;color:rgba(250,245,240,.7);font-size:20px;display:flex;align-items:center;justify-content:center;transition:all .2s;border-radius:50%;-webkit-tap-highlight-color:transparent;touch-action:none;user-select:none}
+.mic-btn.on{background:var(--c3);color:#fff;transform:scale(1.15)}
+.mic-btn.listening{background:#c0392b;color:#fff;transform:scale(1.2);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}50%{box-shadow:0 0 0 8px rgba(192,57,43,0)}}
+.send-btn{background:var(--c3);border:none;cursor:pointer;color:#fff;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:20px;transition:opacity .15s;border-radius:50%;-webkit-tap-highlight-color:transparent}
 .send-btn:hover{opacity:.85}
 .send-btn:disabled{opacity:.3;cursor:default}
 .err-msg{background:#fff0f0;border:1px solid #ffcccc;border-left:3px solid #e05555;padding:10px 14px;font-size:12px;color:#7a2222;display:none}
@@ -238,7 +238,7 @@ body{font-family:var(--ss);background:var(--c0);color:var(--ink);min-height:100v
       <span class="inp-hint" id="inp-hint">Чем короче и точнее — тем выше балл. Лимит 500 символов.</span>
       <div class="inp-controls">
         <span class="char-cnt" id="char-cnt">0 / 500</span>
-        <button class="mic-btn" id="mic-btn" onclick="toggleMic()" title="Голосовой ввод">🎤</button>
+        <button class="mic-btn" id="mic-btn" onclick="toggleMic()" title="Удерживайте для записи">🎤</button>
         <button class="send-btn" id="send-btn" onclick="send()">↑</button>
       </div>
     </div>
@@ -304,21 +304,73 @@ const SC=[
 let cur=null,hist=[],sess=[];
 try{sess=JSON.parse(localStorage.getItem('hrk_v7')||'[]');}catch(e){}
 
-// VOICE
-let recog=null,micOn=false;
+// VOICE — совместимо с Safari iOS
+let micOn=false;
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+
 function initMic(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   const btn=document.getElementById('mic-btn');
   if(!SR){if(btn)btn.style.display='none';return;}
-  recog=new SR();recog.lang='ru-RU';recog.continuous=false;recog.interimResults=false;
-  recog.onstart=()=>{micOn=true;btn.classList.add('on','listening');setHint('🎤 Говорите...');};
-  recog.onresult=e=>{const t=e.results[0][0].transcript;const inp=document.getElementById('inp');inp.value=(inp.value+' '+t).trim();onInp();stopMic();};
-  recog.onerror=e=>{stopMic();if(e.error==='not-allowed')setHint('⚠️ Разрешите доступ к микрофону');else if(e.error==='no-speech')setHint('Ничего не услышал — попробуйте ещё раз');};
-  recog.onend=()=>stopMic();
+  // Touch события как в Telegram
+  if(btn){
+    btn.addEventListener('touchstart',e=>{e.preventDefault();startMic();},{passive:false});
+    btn.addEventListener('touchend',e=>{e.preventDefault();stopMic();},{passive:false});
+    btn.addEventListener('touchcancel',e=>{e.preventDefault();stopMic();},{passive:false});
+  }
 }
-function toggleMic(){if(!recog){setHint('Голосовой ввод не поддерживается');return;}micOn?stopMic():startMic();}
-function startMic(){try{recog.start();}catch(e){try{recog.stop();}catch(e2){}setTimeout(()=>{try{recog.start();}catch(e3){}},200);}}
-function stopMic(){try{recog.stop();}catch(e){}micOn=false;const btn=document.getElementById('mic-btn');if(btn)btn.classList.remove('on','listening');setHint('Чем короче и точнее — тем выше балл. Лимит 500 символов.');}
+
+function createRecog(){
+  const r=new SR();
+  r.lang='ru-RU';
+  r.continuous=false;
+  r.interimResults=true;
+  r.maxAlternatives=1;
+  return r;
+}
+
+let recog=null;
+function toggleMic(){if(!SR){setHint('Голосовой ввод не поддерживается в этом браузере');return;}micOn?stopMic():startMic();}
+
+function startMic(){
+  if(micOn)return;
+  const btn=document.getElementById('mic-btn');
+  try{
+    recog=createRecog();
+    recog.onstart=()=>{
+      micOn=true;
+      if(btn)btn.classList.add('on','listening');
+      setHint('🎤 Говорите... (отпустите чтобы остановить)');
+      if(navigator.vibrate)navigator.vibrate(50);
+    };
+    recog.onresult=e=>{
+      let interim='',final='';
+      for(let i=0;i<e.results.length;i++){
+        if(e.results[i].isFinal)final+=e.results[i][0].transcript;
+        else interim+=e.results[i][0].transcript;
+      }
+      const inp=document.getElementById('inp');
+      if(final){inp.value=(inp.value+' '+final).trim();onInp();}
+      else if(interim){setHint('🎤 '+interim);}
+    };
+    recog.onerror=e=>{
+      stopMic();
+      if(e.error==='not-allowed')setHint('⚠️ Разрешите микрофон в настройках Safari → Конфиденциальность');
+      else if(e.error==='no-speech')setHint('Ничего не услышал — попробуйте ещё раз');
+      else setHint('Ошибка микрофона: '+e.error);
+    };
+    recog.onend=()=>{stopMic();};
+    recog.start();
+  }catch(e){setHint('Ошибка запуска микрофона: '+e.message);}
+}
+
+function stopMic(){
+  micOn=false;
+  const btn=document.getElementById('mic-btn');
+  if(btn)btn.classList.remove('on','listening');
+  if(recog){try{recog.stop();}catch(e){}recog=null;}
+  if(navigator.vibrate)navigator.vibrate(30);
+  setHint('Чем короче и точнее — тем выше балл. Лимит 500 символов.');
+}
 function setHint(t){const h=document.getElementById('inp-hint');if(h)h.textContent=t;}
 function onInp(){const v=document.getElementById('inp').value;const c=document.getElementById('char-cnt');if(c)c.textContent=v.length+' / 500';if(v.length>500)document.getElementById('inp').value=v.slice(0,500);}
 
