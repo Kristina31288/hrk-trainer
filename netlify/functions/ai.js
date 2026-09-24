@@ -26,21 +26,34 @@ exports.handler = async (event) => {
       };
     }
 
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    // Groq отключил llama-3.3-70b-versatile на бесплатном тарифе 16.08.2026.
+    // Модель можно сменить без правки кода: переменная GROQ_MODEL в настройках Netlify.
+    const models = [process.env.GROQ_MODEL || 'openai/gpt-oss-120b', 'openai/gpt-oss-20b'];
+
+    const callGroq = (model) => fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + key
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        max_tokens: body.max_tokens || 400,
+        model,
+        // у gpt-oss размышления тоже тратят токены — даём запас
+        max_tokens: (body.max_tokens || 400) + 600,
+        reasoning_effort: 'low',
         temperature: 0.85,
         messages: body.messages || []
       })
     });
 
-    const data = await response.json();
+    let response = await callGroq(models[0]);
+    let data = await response.json();
+
+    // если основная модель недоступна — пробуем запасную
+    if (!response.ok && (response.status === 404 || response.status === 400) && models[1] !== models[0]) {
+      response = await callGroq(models[1]);
+      data = await response.json();
+    }
 
     return {
       statusCode: response.ok ? 200 : response.status,
